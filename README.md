@@ -1,2 +1,2 @@
-# compiler_project_10
+# compiler_project_1
 contains compiler design mini project 
