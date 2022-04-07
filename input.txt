@@ -1,0 +1,32 @@
+5
+exp :- exp addop term | term
+addop :- + | -
+term :- term mulop factor | factor
+mulop :- * | /
+factor :- ( exp ) | id
+id + id * ( id - id ) / id $
+
+8
+A :- A a | A b | A c | # | d A
+B :- c | d | B C D | e | B E | B a | B b | f B
+E :- E + T | T
+T :- T * F | F
+F :- ( E ) | id
+S :- ( L ) | a
+L :- L , S | S
+X :- X x | y
+
+2
+A :- B a | A a | c
+B :- B b | A b | d
+
+3
+S :- A a B
+A :- A a | B a
+B :- A B | b
+
+1
+S :- a S b | a b
+C :- ( C ) C | ( C ) C b | ( C ) C b a | e | f
+B :- a B b | a B d | e
+A :- a b d | a b d e | a b d A | a b d A e | f | g
