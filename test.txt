@@ -1,0 +1,6 @@
+void main () {
+    int a;
+    if (a < 10) then
+        a = a*2;
+    else a = a/2;
+}
