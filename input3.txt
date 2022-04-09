@@ -1,8 +1,10 @@
-3
-sel_stmt :- IF ( exp ) THEN stmt optional_tail
+5
+sel_stmt :- IF ( exp ) THEN compound_stmt optional_tail | IF ( exp ) THEN stmt ; optional_tail
 optional_tail :- ELSE tail | sel_stmt | #
-tail :- stmt | sel_stmt
-IF ( exp ) THEN stmt IF ( exp ) THEN stmt ELSE stmt $
+tail :- compound_stmt | stmt ; | sel_stmt
+compound_stmt :- { } | { stmts }
+stmts :- stmts stmt ; | #
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN { stmt ; stmt ; } ELSE stmt ; $
 
 4
 sel_stmt :- IF ( exp ) THEN matched optional_tail | stmt

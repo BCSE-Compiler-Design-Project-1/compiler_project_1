@@ -1,20 +1,20 @@
-
-start :- void main ( ) { stmts }
-stmt :- compound_stmt | exp_stmt | sel_stmt | read_stmts | write_stmts
+27
+stmt :- compound_stmt | exp_stmt | read_stmts | write_stmts | sel_stmt
+other :- compound_stmt | exp_stmt | read_stmt | write_stmt
 stmts :-  stmts stmt | stmt
 compound_stmt :- { } | { stmts } | { decls } | { decls stmts }
 read_stmts :- read_stmts read_stmt | read_stmt
 write_stmts :- write_stmts write_stmt | write_stmt
 read_stmt :-  cin << id ;
-write_stmt : - cout >> exp ; 
+write_stmt :- cout >> exp ; 
 decls :- decls decl | decl
 decl :- type list ;
 type :- int | float | char
 list :- list , id | id
 exp_stmt :- ; | exp ;
-
-sel_stmt :- IF ( exp ) THEN stmt | IF ( exp ) THEN stmt ELSE stmt
-
+sel_stmt :- IF ( exp ) THEN other optional_tail
+optional_tail :- ELSE tail | sel_stmt | #
+tail :- other | sel_stmt
 exp :- assignment_exp | exp , assignment_exp
 assignment_exp :- equality_exp = equality_exp | equality_exp
 equality_exp :- equality_exp equality_OP rel_exp | rel_exp
@@ -26,3 +26,8 @@ add_OP :- + | -
 mul_exp :- mul_exp mul_OP pri_exp | pri_exp
 mul_OP :- * | / | %
 pri_exp :- ( exp ) | id | constant
+IF ( exp ) THEN {
+    IF ( exp ) THEN id = id + id ; ELSE IF ( exp ) THEN  id = id * id ; ELSE id = constant ;
+} ELSE IF ( exp ) THEN {
+    IF ( exp ) THEN id = id - constant ; ELSE id = id % constant ;
+} ELSE id = id / constant ; $
