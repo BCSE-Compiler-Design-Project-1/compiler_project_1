@@ -1,9 +1,15 @@
+3
+sel_stmt :- IF ( exp ) THEN stmt optional_tail
+optional_tail :- ELSE tail | sel_stmt | #
+tail :- stmt | sel_stmt
+IF ( exp ) THEN stmt IF ( exp ) THEN stmt ELSE stmt $
+
 4
 sel_stmt :- IF ( exp ) THEN matched optional_tail | stmt
 matched :- IF ( exp ) THEN matched ELSE matched | stmt
 optional_tail :- ELSE tail | #
 tail :- IF ( exp ) THEN tail | stmt
-IF ( exp ) THEN stmt ELSE IF ( exp ) THEN stmt ELSE stmt $
+IF ( exp ) THEN stmt ELSE stmt $
 
 
 3
