@@ -1,15 +1,10 @@
-2
-sel_stmt1 :- IF ( exp ) THEN sel_stmt | IF ( exp ) THEN sel_stmt ELSE sel_stmt | stmt
-IF ( exp ) THEN stmt ELSE stmt $
+4
+sel_stmt :- IF ( exp ) THEN matched optional_tail | stmt
+matched :- IF ( exp ) THEN matched ELSE matched | stmt
+optional_tail :- ELSE tail | #
+tail :- IF ( exp ) THEN tail | stmt
+IF ( exp ) THEN stmt ELSE IF ( exp ) THEN stmt ELSE stmt $
 
-2
-Stmt :- IF ( exp ) THEN stmt Optional_Else_Tail
-Optional_Else_Tail :- ELSE stmt | ELSE Stmt | Stmt | #
-IF ( exp ) THEN stmt IF ( exp ) THEN stmt ELSE IF ( exp ) THEN stmt ELSE stmt $
-
-sel_stmt :- IF ( exp ) THEN stmt optional_else_stmt
-optional_else_stmt :- else stmt | #
-IF ( exp ) THEN stmt $
 
 3
 sel_stmt :- matched_stmt | open_stmt
