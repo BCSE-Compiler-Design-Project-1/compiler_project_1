@@ -3,8 +3,8 @@ exp :- exp addop term | term
 addop :- + | -
 term :- term mulop factor | factor
 mulop :- * | /
-factor :- ( exp ) | id
-id + id * ( id - id ) / id $
+factor :- ( exp ) | id | constant
+id + id * ( id - id ) / constant $
 
 8
 A :- A a | A b | A c | # | d A
@@ -30,3 +30,17 @@ S :- a S b | a b
 C :- ( C ) C | ( C ) C b | ( C ) C b a | e | f
 B :- a B b | a B d | e
 A :- a b d | a b d e | a b d A | a b d A e | f | g
+
+
+
+bitwise_or_exp :- bitwise_or_exp bitwise_OR bitwise_or_exp | bitwise_xor_exp   
+bitwise_OR :- |
+bitwise_xor_exp :- bitwise_xor_exp bitwise_XOR bitwise_and_exp | bitwise_and_exp   
+bitwise_XOR :- ^
+bitwise_and_exp :- bitwise_and_exp bitwise_AND equality_exp | equality_exp
+bitwise_AND :- &
+
+logical_or_exp :- logical_or_exp logical_OR logical_and_exp | logical_and_exp
+logical_OR :- ||
+logical_and_exp :- logical_and_exp logical_AND equality_exp | equality_exp
+logical_AND :- &&

@@ -137,6 +137,8 @@ void LL1gr::readGrammar()
         this->inserNtl(nTl);
         parsed_prod[nTl] = parse(s);
     }
+    if (terminals.find(EPSILON) == terminals.end())
+        insertTl(EPSILON);
 }
 
 void LL1gr::left_factor(const string &prod)
@@ -284,6 +286,8 @@ void LL1gr::remLR_dir(const string &prod)
     this->insertTl(EPSILON);
     for (auto x : non_recur)
     {
+        if (x[0] == EPSILON)
+            x.pop_back();
         x.push_back(prod + "\'");
         this->parsed_prod[prod].push_back(x);
     }

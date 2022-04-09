@@ -39,13 +39,13 @@ public:
         int count = 0;
         for (auto it : this->prods)
         {
-            cout << it << " " << non_terminals[it] << "  ";
+            // cout << it << " " << non_terminals[it] << "  ";
             for (int i = 0; i < this->parsed_prod[it].size(); i++)
             {
-                cout << count << " " << it << " " << i << "   ";
+                // cout << count << " " << it << " " << i << "   ";
                 productions[count++] = {non_terminals[it], i};
             }
-            cout << "\n\n";
+            // cout << "\n\n";
         }
         parsing_table.resize(non_terminals.size());
         for (auto &it : parsing_table)
@@ -54,7 +54,7 @@ public:
         for (auto &it : terminals)
         {
             it.second = i++;
-            cout << it.first << " " << it.second << "\n";
+            // cout << it.first << " " << it.second << "\n";
         }
     }
     void firstUtil();
@@ -260,6 +260,9 @@ void LL1pr::fillParsingTable()
             ++count;
             temp.clear();
         }
+        for (auto it : terminals)
+            if (it.first != EPSILON && this->parsing_table[i][it.second] == -1 && FIRST[prods[i]].find(it.first) == FIRST[prods[i]].end() && FOLLOW[prods[i]].find(it.first) == FOLLOW[prods[i]].end())
+                this->parsing_table[i][it.second] = -2;
     }
     cout << "\n";
     for (auto i = 0; i < nTcount; ++i)
@@ -311,7 +314,7 @@ void LL1pr::parser()
         }
         else
         {
-            int prod_num = parsing_table[non_terminals[parsing_st.top()]][terminals[curr_token]];
+            int prod_num = parsing_table[non_terminals[parsing_st.top()]][curr_token != "$" ? terminals[curr_token] : terminals[EPSILON]];
             if (prod_num >= 0)
             {
                 pair<int, int> temp = productions[prod_num];
@@ -332,7 +335,7 @@ void LL1pr::parser()
             }
             else
             {
-                cout << "error.\n";
+                cout << "error" << parsing_st.top() << " " << curr_token << " " << prod_num << "\n";
                 exit(EXIT_FAILURE);
             }
         }

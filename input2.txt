@@ -1,0 +1,5 @@
+4 
+decls :- decls decl | decl
+decl :- type list ;
+type :- int | float | char
+list :- list , id | id
