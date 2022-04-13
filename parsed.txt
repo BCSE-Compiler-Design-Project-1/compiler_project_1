@@ -1,0 +1,86 @@
+sel_stmt1 -> { compound_stmt1 optional_tail | stmt ; optional_tail 
+optional_tail -> ELSE tail | IF ( exp ) THEN sel_stmt1 | ε 
+stmts' -> stmt ; stmts' | ε 
+compound_stmt1 -> } | stmts' } 
+tail -> compound_stmt | stmt ; | IF ( exp ) THEN sel_stmt1 
+compound_stmt -> { compound_stmt1 
+sel_stmt -> IF ( exp ) THEN sel_stmt1 
+stmts -> stmts' 
+
+
+sel_stmt - { IF, }
+stmts - { ε, stmt, }
+optional_tail - { ε, IF, ELSE, }
+tail - { IF, stmt, {, }
+compound_stmt - { {, }
+compound_stmt1 - { stmt, }, }
+stmts' - { ε, stmt, }
+sel_stmt1 - { stmt, {, }
+
+
+
+optional_tail - { $, }
+stmts' - { }, }
+compound_stmt1 - { $, IF, ELSE, }
+compound_stmt - { $, }
+tail - { $, }
+sel_stmt1 - { $, }
+stmts - { }
+sel_stmt - { $, }
+
+
+
+sel_stmt     -2   -2   -2   -2   -2   -2   -2   -2   -2   -1    0
+optional_tail   -2    1   -2   -2   -2   -2   -2   -2   -2    3    2
+tail         -2   -2   -2   -2    4   -2    5   -2   -2   -1    6
+compound_stmt   -2   -2   -2   -2    7   -2   -2   -2   -2   -1   -2
+stmts        -2   -2   -2   -2   -2   -2    8   -2   -2   -1   -2
+compound_stmt1   10   -1   -2   -2   -2   -2   10   -2   -2   -1   -1
+sel_stmt1    -2   -2   -2   -2   11   -2   12   -2   -2   -1   -2
+stmts'       14   -2   -2   -2   -2   -2   13   -2   -2   -1   -2
+
+
+MATCHED                                                                                              | STACK                                                                                                | INPUT      | ACTION                                            
+                                                                                                     | sel_stmt $                                                                                           | IF         | push sel_stmt                                     
+                                                                                                     | IF ( exp ) THEN sel_stmt1 $                                                                          | IF         | output sel_stmt -> IF ( exp ) THEN sel_stmt1      
+IF                                                                                                   | ( exp ) THEN sel_stmt1 $                                                                             | (          | match IF                                          
+IF (                                                                                                 | exp ) THEN sel_stmt1 $                                                                               | exp        | match (                                           
+IF ( exp                                                                                             | ) THEN sel_stmt1 $                                                                                   | )          | match exp                                         
+IF ( exp )                                                                                           | THEN sel_stmt1 $                                                                                     | THEN       | match )                                           
+IF ( exp ) THEN                                                                                      | sel_stmt1 $                                                                                          | {          | match THEN                                        
+IF ( exp ) THEN                                                                                      | { compound_stmt1 optional_tail $                                                                     | {          | output sel_stmt1 -> { compound_stmt1 optional_tail 
+IF ( exp ) THEN {                                                                                    | compound_stmt1 optional_tail $                                                                       | stmt       | match {                                           
+IF ( exp ) THEN {                                                                                    | stmts' } optional_tail $                                                                             | stmt       | output compound_stmt1 -> stmts' }                 
+IF ( exp ) THEN {                                                                                    | stmt ; stmts' } optional_tail $                                                                      | stmt       | output stmts' -> stmt ; stmts'                    
+IF ( exp ) THEN { stmt                                                                               | ; stmts' } optional_tail $                                                                           | ;          | match stmt                                        
+IF ( exp ) THEN { stmt ;                                                                             | stmts' } optional_tail $                                                                             | }          | match ;                                           
+IF ( exp ) THEN { stmt ;                                                                             | } optional_tail $                                                                                    | }          | output stmts' -> ε                               
+IF ( exp ) THEN { stmt ; }                                                                           | optional_tail $                                                                                      | ELSE       | match }                                           
+IF ( exp ) THEN { stmt ; }                                                                           | ELSE tail $                                                                                          | ELSE       | output optional_tail -> ELSE tail                 
+IF ( exp ) THEN { stmt ; } ELSE                                                                      | tail $                                                                                               | IF         | match ELSE                                        
+IF ( exp ) THEN { stmt ; } ELSE                                                                      | IF ( exp ) THEN sel_stmt1 $                                                                          | IF         | output tail -> IF ( exp ) THEN sel_stmt1          
+IF ( exp ) THEN { stmt ; } ELSE IF                                                                   | ( exp ) THEN sel_stmt1 $                                                                             | (          | match IF                                          
+IF ( exp ) THEN { stmt ; } ELSE IF (                                                                 | exp ) THEN sel_stmt1 $                                                                               | exp        | match (                                           
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp                                                             | ) THEN sel_stmt1 $                                                                                   | )          | match exp                                         
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp )                                                           | THEN sel_stmt1 $                                                                                     | THEN       | match )                                           
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN                                                      | sel_stmt1 $                                                                                          | {          | match THEN                                        
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN                                                      | { compound_stmt1 optional_tail $                                                                     | {          | output sel_stmt1 -> { compound_stmt1 optional_tail 
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN {                                                    | compound_stmt1 optional_tail $                                                                       | stmt       | match {                                           
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN {                                                    | stmts' } optional_tail $                                                                             | stmt       | output compound_stmt1 -> stmts' }                 
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN {                                                    | stmt ; stmts' } optional_tail $                                                                      | stmt       | output stmts' -> stmt ; stmts'                    
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN { stmt                                               | ; stmts' } optional_tail $                                                                           | ;          | match stmt                                        
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN { stmt ;                                             | stmts' } optional_tail $                                                                             | stmt       | match ;                                           
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN { stmt ;                                             | stmt ; stmts' } optional_tail $                                                                      | stmt       | output stmts' -> stmt ; stmts'                    
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN { stmt ; stmt                                        | ; stmts' } optional_tail $                                                                           | ;          | match stmt                                        
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN { stmt ; stmt ;                                      | stmts' } optional_tail $                                                                             | }          | match ;                                           
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN { stmt ; stmt ;                                      | } optional_tail $                                                                                    | }          | output stmts' -> ε                               
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN { stmt ; stmt ; }                                    | optional_tail $                                                                                      | ELSE       | match }                                           
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN { stmt ; stmt ; }                                    | ELSE tail $                                                                                          | ELSE       | output optional_tail -> ELSE tail                 
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN { stmt ; stmt ; } ELSE                               | tail $                                                                                               | stmt       | match ELSE                                        
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN { stmt ; stmt ; } ELSE                               | stmt ; $                                                                                             | stmt       | output tail -> stmt ;                             
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN { stmt ; stmt ; } ELSE stmt                          | ; $                                                                                                  | ;          | match stmt                                        
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN { stmt ; stmt ; } ELSE stmt ;                        | $                                                                                                    | $          | match ;                                           
+IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN { stmt ; stmt ; } ELSE stmt ;                        | $                                                                                                    | $          | accept                                            
+
+
+

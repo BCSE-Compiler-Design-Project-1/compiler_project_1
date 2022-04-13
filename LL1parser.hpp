@@ -1,4 +1,5 @@
 #include <stack>
+#include <fstream>
 #include "LL1grammer.hpp"
 class LL1pr
 {
@@ -345,16 +346,16 @@ void LL1pr::parser()
 
 void LL1pr::printParsing(const string &matched, const vector<string> &curr_st, const string &input_token, const string &action)
 {
-    cout.width(30);
+    cout.width(100);
     cout << left << matched << " | ";
     string st = "";
     for (auto it = curr_st.rbegin(); it != curr_st.rend(); it++)
         st += *it + " ";
-    cout.width(40);
+    cout.width(100);
     cout << left << st << " | ";
     cout.width(10);
     cout << left << input_token << " | ";
-    cout.width(30);
+    cout.width(50);
     cout << left << action;
     cout << endl;
 }

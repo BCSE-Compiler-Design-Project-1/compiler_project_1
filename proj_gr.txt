@@ -41,8 +41,7 @@ void main ( ) {
     } ELSE IF ( exp ) THEN {
         cout << constant << id << ( id + ( id * id ) - id ) / constant ;
         IF ( exp ) THEN id = id - constant ;
+        IF ( exp ) THEN cout << id ; 
         ELSE id = id % constant ;
     } ELSE id = id / constant ;
 } $
-
-
