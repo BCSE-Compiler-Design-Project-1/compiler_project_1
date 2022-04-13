@@ -341,21 +341,20 @@ void LL1pr::parser()
             }
         }
     } while (flag);
-    cout << "\n";
 }
 
 void LL1pr::printParsing(const string &matched, const vector<string> &curr_st, const string &input_token, const string &action)
 {
-    cout.width(100);
+    cout.width(50);
     cout << left << matched << " | ";
     string st = "";
     for (auto it = curr_st.rbegin(); it != curr_st.rend(); it++)
         st += *it + " ";
-    cout.width(100);
+    cout.width(40);
     cout << left << st << " | ";
     cout.width(10);
     cout << left << input_token << " | ";
-    cout.width(50);
+    cout.width(30);
     cout << left << action;
     cout << endl;
 }

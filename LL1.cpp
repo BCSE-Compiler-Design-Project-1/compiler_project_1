@@ -14,5 +14,4 @@ int main()
     pr.fillParsingTable();
     cout << "\n\n";
     pr.parser();
-    cout << "\n\n";
 }

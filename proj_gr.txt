@@ -1,4 +1,4 @@
-32
+33
 start :- void main ( ) compound_stmt
 stmt :- compound_stmt | exp_stmt | read_stmts | write_stmts | sel_stmt
 other :- compound_stmt | exp_stmt | read_stmt | write_stmt
@@ -13,9 +13,10 @@ write_stmt :- cout outputs
 outputs :- OUT_OP exp outputs | OUT_OP exp ;
 OUT_OP :- <<
 decls :- decls decl | decl
-decl :- type list ;
+decl :- type init_decl_list ;
+init_decl_list :- init_decl | init_decl_list , init_decl
+init_decl :- id | id = exp
 type :- int | float | char
-list :- list , id | id
 exp_stmt :- ; | exp ;
 sel_stmt :- IF ( exp ) THEN other optional_tail
 optional_tail :- ELSE tail | sel_stmt | #
@@ -32,7 +33,8 @@ mul_exp :- mul_exp mul_OP pri_exp | pri_exp
 mul_OP :- * | / | %
 pri_exp :- ( exp ) | id | constant
 void main ( ) { 
-    int id , id ; float id ; 
+    int id = exp , id ;
+    float id ; 
     IF ( exp ) THEN {
         cin >> id >> id ;
         IF ( exp ) THEN id = id + id ;
