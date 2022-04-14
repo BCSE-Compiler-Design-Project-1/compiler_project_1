@@ -1,7 +1,12 @@
-5
-decls :- decls decl | decl
+10
+decls :- decls decl
+decls :- decl
 decl :- type init_decl_list ;
-init_decl_list :- init_decl | init_decl_list , init_decl
-init_decl :- id | id = exp
-type :- int | float | char
+init_decl_list :- init_decl
+init_decl_list :- init_decl_list , init_decl
+init_decl :- id
+init_decl :- id = exp
+type :- int
+type :- float
+type :- char
 int id = , exp , id ; float id = exp , id ; $

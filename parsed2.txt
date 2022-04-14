@@ -51,7 +51,7 @@ int                                                | id init_decl1 init_decl_lis
 int id                                             | init_decl1 init_decl_list' ; decls' $    | =          | match id                      
 int id                                             | = exp init_decl_list' ; decls' $         | =          | output init_decl1 -> = exp    
 int id =                                           | exp init_decl_list' ; decls' $           | ,          | match =                       
-int id =                                           | exp init_decl_list' ; decls' $           | ,          | error M[decls, ',' ] = scan   
+int id =                                           | exp init_decl_list' ; decls' $           | ,          | error M[exp, ',' ] = scan     
 int id = exp                                       | init_decl_list' ; decls' $               | ,          | match exp                     
 int id = exp                                       | , init_decl init_decl_list' ; decls' $   | ,          | output init_decl_list' -> , init_decl init_decl_list' 
 int id = exp ,                                     | init_decl init_decl_list' ; decls' $     | id         | match ,                       
