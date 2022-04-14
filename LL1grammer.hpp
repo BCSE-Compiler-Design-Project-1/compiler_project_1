@@ -22,6 +22,7 @@ private:
     void inserNtl(string);
     void printProd(const vector<string> &);
     vector<vector<string>> parse(const string &);
+    vector<string> parse2(const string &);
     void left_factor(const string &);
     void remLR_dir(const string &);
     vector<vector<string>> concat_prod(const string &, const vector<vector<string>>::iterator &);
@@ -80,7 +81,11 @@ void LL1gr::inserNtl(string nTl)
 {
     if (!this->nTcount)
         this->startSym = nTl;
-    non_terminals[nTl] = this->nTcount++;
+    if (non_terminals.find(nTl) == non_terminals.end())
+    {
+        non_terminals[nTl] = this->nTcount++;
+        parsed_prod[nTl] = vector<vector<string>>();
+    }
     if (terminals.find(nTl) != terminals.end())
     {
         terminals.erase(nTl);
@@ -124,6 +129,34 @@ vector<vector<string>> LL1gr::parse(const string &prod)
     return productions;
 }
 
+vector<string> LL1gr::parse2(const string &prod)
+{
+    vector<string> productions;
+    string s = prod.substr(prod.find(":-") + 3);
+    string p = "";
+    for (char ch : s)
+    {
+        if (ch == ' ')
+        {
+            if (!p.empty())
+            {
+                if (p == "#")
+                    p = EPSILON;
+                productions.push_back(p);
+                this->insertTl(p);
+                p = "";
+            }
+        }
+        else
+            p += ch;
+    }
+    if (p == "#")
+        p = EPSILON;
+    productions.push_back(p);
+    this->insertTl(p);
+    return productions;
+}
+
 void LL1gr::readGrammar()
 {
     int n;
@@ -135,7 +168,7 @@ void LL1gr::readGrammar()
         getline(cin, s);
         string nTl = s.substr(0, s.find(" "));
         this->inserNtl(nTl);
-        parsed_prod[nTl] = parse(s);
+        parsed_prod[nTl].push_back(parse2(s));
     }
     if (terminals.find(EPSILON) == terminals.end())
         insertTl(EPSILON);
@@ -298,8 +331,8 @@ void LL1gr::remLR_dir(const string &prod)
         new_prod.push_back(x);
     }
     new_prod.push_back(vector<string>(1, EPSILON));
-    this->parsed_prod[prod + "\'"] = new_prod;
     this->inserNtl(prod + "\'");
+    this->parsed_prod[prod + "\'"] = new_prod;
 }
 
 void LL1gr::ll1ifyGrammar()

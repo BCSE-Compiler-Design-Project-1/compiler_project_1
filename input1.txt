@@ -1,3 +1,41 @@
+32
+exp :- assignment_exp
+exp :- exp , assignment_exp
+assignment_exp :- logical_or_exp = assignment_exp
+assignment_exp :- logical_or_exp
+logical_or_exp :- logical_or_exp logical_OR logical_and_exp
+logical_or_exp :- logical_and_exp
+logical_OR :- ||
+logical_and_exp :- logical_and_exp logical_AND equality_exp
+logical_and_exp :- equality_exp
+logical_AND :- &&
+equality_exp :- equality_exp equality_OP rel_exp
+equality_exp :- rel_exp
+equality_OP :- ==
+equality_OP :- !=
+rel_exp :- rel_exp rel_OP add_exp
+rel_exp :- add_exp
+rel_OP :- <
+rel_OP :- <=
+rel_OP :- >
+rel_OP :- >=
+add_exp :- add_exp add_OP mul_exp
+add_exp :- mul_exp
+add_OP :- +
+add_OP :- -
+mul_exp :- mul_exp mul_OP pri_exp
+mul_exp :- pri_exp
+mul_OP :- *
+mul_OP :- /
+mul_OP :- %
+pri_exp :- ( exp )
+pri_exp :- id
+pri_exp :- constant
+id = id = id * id || id  && id - constant $
+
+id = id , id = ( id + ( id * id ) - id ) / constant $  
+
+
 11
 exp :- assignment_exp | exp , assignment_exp
 assignment_exp :- equality_exp = equality_exp | equality_exp
