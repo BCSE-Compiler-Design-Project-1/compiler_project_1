@@ -1,41 +1,86 @@
-33
+78
 start :- void main ( ) compound_stmt
-stmt :- compound_stmt | exp_stmt | read_stmts | write_stmts | sel_stmt
-other :- compound_stmt | exp_stmt | read_stmt | write_stmt
-stmts :-  stmts stmt | stmt
-compound_stmt :- { } | { stmts } | { decls } | { decls stmts }
-read_stmts :- read_stmts read_stmt | read_stmt
-write_stmts :- write_stmts write_stmt | write_stmt
+stmt :- compound_stmt
+stmt :- exp_stmt
+stmt :- read_stmts
+stmt :- write_stmts
+stmt :- sel_stmt
+other :- compound_stmt
+other :- exp_stmt
+other :- read_stmt
+other :- write_stmt
+stmts :-  stmts stmt
+stmts :- stmt
+compound_stmt :- { }
+compound_stmt :- { stmts }
+compound_stmt :- { decls }
+compound_stmt :- { decls stmts }
+read_stmts :- read_stmts read_stmt
+read_stmts :- read_stmt
+write_stmts :- write_stmts write_stmt
+write_stmts :- write_stmt
 read_stmt :-  cin inputs
-inputs :- INP_OP id inputs | INP_OP id ;
+inputs :- INP_OP id inputs
+inputs :- INP_OP id ;
 INP_OP :- >>
 write_stmt :- cout outputs
-outputs :- OUT_OP exp outputs | OUT_OP exp ;
+outputs :- OUT_OP exp outputs
+outputs :- OUT_OP exp ;
 OUT_OP :- <<
-decls :- decls decl | decl
+decls :- decls decl
+decls :- decl
 decl :- type init_decl_list ;
-init_decl_list :- init_decl | init_decl_list , init_decl
-init_decl :- id | id = exp
-type :- int | float | char
-exp_stmt :- ; | exp ;
+init_decl_list :- init_decl
+init_decl_list :- init_decl_list , init_decl
+init_decl :- id
+init_decl :- id = exp
+type :- int
+type :- float
+type :- char
+exp_stmt :- ;
+exp_stmt :- exp ;
 sel_stmt :- IF ( exp ) THEN other optional_tail
-optional_tail :- ELSE tail | sel_stmt | #
-tail :- other | sel_stmt
-exp :- assignment_exp | exp , assignment_exp
-assignment_exp :- equality_exp = equality_exp | equality_exp
-equality_exp :- equality_exp equality_OP rel_exp | rel_exp
-equality_OP :- == | !=
-rel_exp :- rel_exp rel_OP add_exp | add_exp
-rel_OP :- < | <= | > | >=   
-add_exp :- add_exp add_OP mul_exp | mul_exp
-add_OP :- + | -
-mul_exp :- mul_exp mul_OP pri_exp | pri_exp
-mul_OP :- * | / | %
-pri_exp :- ( exp ) | id | constant
+optional_tail :- ELSE tail
+optional_tail :- sel_stmt
+optional_tail :- #
+tail :- other
+tail :- sel_stmt
+exp :- assignment_exp
+exp :- exp , assignment_exp
+assignment_exp :- logical_or_exp = assignment_exp
+assignment_exp :- logical_or_exp
+logical_or_exp :- logical_or_exp logical_OR logical_and_exp
+logical_or_exp :- logical_and_exp
+logical_OR :- ||
+logical_and_exp :- logical_and_exp logical_AND equality_exp
+logical_and_exp :- equality_exp
+logical_AND :- &&
+equality_exp :- equality_exp equality_OP rel_exp
+equality_exp :- rel_exp
+equality_OP :- ==
+equality_OP :- !=
+rel_exp :- rel_exp rel_OP add_exp
+rel_exp :- add_exp
+rel_OP :- <
+rel_OP :- <=
+rel_OP :- >
+rel_OP :- >=   
+add_exp :- add_exp add_OP mul_exp
+add_exp :- mul_exp
+add_OP :- +
+add_OP :- -
+mul_exp :- mul_exp mul_OP pri_exp
+mul_exp :- pri_exp
+mul_OP :- *
+mul_OP :- /
+mul_OP :- %
+pri_exp :- ( exp )
+pri_exp :- id
+pri_exp :- constant
 void main ( ) { 
     int id = exp , id ;
     float id ; 
-    IF ( exp ) THEN {
+    IF ( id || constant && id ) THEN {
         cin >> id >> id ;
         IF ( exp ) THEN id = id + id ;
         ELSE IF ( exp ) THEN  id = id * id ;
