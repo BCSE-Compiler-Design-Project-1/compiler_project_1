@@ -4,7 +4,7 @@ optional_tail :- ELSE tail | sel_stmt | #
 tail :- compound_stmt | stmt ; | sel_stmt
 compound_stmt :- { } | { stmts }
 stmts :- stmts stmt ; | #
-IF ( exp ) THEN { stmt ; } ELSE IF ( exp ) THEN { stmt ; stmt ; } ELSE stmt ; $
+IF ( exp ) THEN { stmt ; } ELSE ELSE IF ( exp ) THEN { stmt ; stmt ; } $
 
 4
 sel_stmt :- IF ( exp ) THEN matched optional_tail | stmt

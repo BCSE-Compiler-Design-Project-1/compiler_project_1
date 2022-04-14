@@ -97,7 +97,7 @@ void LL1pr::firstUtil()
     {
         cout << it.first << " - {";
         for (auto it1 : it.second)
-            cout << " " << it1 << ",";
+            cout << " '" << it1 << "' ,";
         cout << " }\n";
     }
 }
@@ -162,7 +162,7 @@ void LL1pr::followUtil()
     {
         cout << it.first << " - {";
         for (auto it1 : it.second)
-            cout << " " << it1 << ",";
+            cout << " '" << it1 << "' ,";
         cout << " }\n";
     }
 }
@@ -268,11 +268,11 @@ void LL1pr::fillParsingTable()
     cout << "\n";
     for (auto i = 0; i < nTcount; ++i)
     {
-        cout.width(10);
+        cout.width(20);
         cout << left << prods[i];
         for (auto j = 0; j < Tcount; ++j)
         {
-            cout.width(5);
+            cout.width(7);
             cout << right << parsing_table[i][j];
         }
         cout << endl;
@@ -334,10 +334,27 @@ void LL1pr::parser()
                     action += *it + " ";
                 printParsing(matched, curr_st, curr_token, action);
             }
+            else if (prod_num == -1)
+            {
+                if (parsing_st.top() == startSym)
+                {
+                    action = "error skip " + curr_token;
+                    printParsing(matched, curr_st, curr_token, action);
+                    cin >> curr_token;
+                }
+                else
+                {
+                    curr_st.pop_back();
+                    parsing_st.pop();
+                    action = "error M[" + parsing_st.top() + ", '" + curr_token + "' ] = pop";
+                    printParsing(matched, curr_st, curr_token, action);
+                }
+            }
             else
             {
-                cout << "error" << parsing_st.top() << " " << curr_token << " " << prod_num << "\n";
-                exit(EXIT_FAILURE);
+                action = "error M[" + parsing_st.top() + ", '" + curr_token + "' ] = scan";
+                printParsing(matched, curr_st, curr_token, action);
+                cin >> curr_token;
             }
         }
     } while (flag);

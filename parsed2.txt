@@ -1,0 +1,81 @@
+init_decl_list' -> , init_decl init_decl_list' | ε 
+decls' -> decl decls' | ε 
+decls -> decl decls' 
+init_decl1 -> ε | = exp 
+init_decl_list -> init_decl init_decl_list' 
+init_decl -> id init_decl1 
+decl -> type init_decl_list ; 
+type -> int | float | char 
+
+
+decls - { 'char' , 'float' , 'int' , }
+init_decl_list - { 'id' , }
+init_decl - { 'id' , }
+init_decl1 - { '=' , 'ε' , }
+type - { 'char' , 'float' , 'int' , }
+decl - { 'char' , 'float' , 'int' , }
+decls' - { 'ε' , 'char' , 'float' , 'int' , }
+init_decl_list' - { 'ε' , ',' , }
+
+
+
+init_decl1 - { ',' , ';' , }
+init_decl - { ';' , ',' , }
+init_decl_list - { ';' , }
+type - { 'id' , }
+decl - { '$' , 'char' , 'float' , 'int' , }
+init_decl_list' - { ';' , }
+decls' - { '$' , }
+decls - { '$' , }
+
+
+
+decls                     0      0      0     -2     -2     -1     -2     -2     -2
+decl                      1      1      1     -2     -2     -1     -2     -2     -2
+init_decl_list           -2     -2     -2     -2     -2     -1      2     -2     -1
+init_decl                -2     -2     -2     -2     -2     -1      3     -1     -1
+type                      6      5      4     -2     -2     -1     -1     -2     -2
+init_decl1               -2     -2     -2     -2      8     -1     -2      7      7
+decls'                    9      9      9     -2     -2     10     -2     -2     -2
+init_decl_list'          -2     -2     -2     -2     -2     -1     -2     11     12
+
+
+MATCHED                                            | STACK                                    | INPUT      | ACTION                        
+                                                   | decls $                                  | int        | push decls                    
+                                                   | decl decls' $                            | int        | output decls -> decl decls'   
+                                                   | type init_decl_list ; decls' $           | int        | output decl -> type init_decl_list ; 
+                                                   | int init_decl_list ; decls' $            | int        | output type -> int            
+int                                                | init_decl_list ; decls' $                | id         | match int                     
+int                                                | init_decl init_decl_list' ; decls' $     | id         | output init_decl_list -> init_decl init_decl_list' 
+int                                                | id init_decl1 init_decl_list' ; decls' $  | id         | output init_decl -> id init_decl1 
+int id                                             | init_decl1 init_decl_list' ; decls' $    | =          | match id                      
+int id                                             | = exp init_decl_list' ; decls' $         | =          | output init_decl1 -> = exp    
+int id =                                           | exp init_decl_list' ; decls' $           | ,          | match =                       
+int id =                                           | exp init_decl_list' ; decls' $           | ,          | error M[decls, ',' ] = scan   
+int id = exp                                       | init_decl_list' ; decls' $               | ,          | match exp                     
+int id = exp                                       | , init_decl init_decl_list' ; decls' $   | ,          | output init_decl_list' -> , init_decl init_decl_list' 
+int id = exp ,                                     | init_decl init_decl_list' ; decls' $     | id         | match ,                       
+int id = exp ,                                     | id init_decl1 init_decl_list' ; decls' $  | id         | output init_decl -> id init_decl1 
+int id = exp , id                                  | init_decl1 init_decl_list' ; decls' $    | ;          | match id                      
+int id = exp , id                                  | init_decl_list' ; decls' $               | ;          | output init_decl1 -> ε       
+int id = exp , id                                  | ; decls' $                               | ;          | output init_decl_list' -> ε  
+int id = exp , id ;                                | decls' $                                 | float      | match ;                       
+int id = exp , id ;                                | decl decls' $                            | float      | output decls' -> decl decls'  
+int id = exp , id ;                                | type init_decl_list ; decls' $           | float      | output decl -> type init_decl_list ; 
+int id = exp , id ;                                | float init_decl_list ; decls' $          | float      | output type -> float          
+int id = exp , id ; float                          | init_decl_list ; decls' $                | id         | match float                   
+int id = exp , id ; float                          | init_decl init_decl_list' ; decls' $     | id         | output init_decl_list -> init_decl init_decl_list' 
+int id = exp , id ; float                          | id init_decl1 init_decl_list' ; decls' $  | id         | output init_decl -> id init_decl1 
+int id = exp , id ; float id                       | init_decl1 init_decl_list' ; decls' $    | =          | match id                      
+int id = exp , id ; float id                       | = exp init_decl_list' ; decls' $         | =          | output init_decl1 -> = exp    
+int id = exp , id ; float id =                     | exp init_decl_list' ; decls' $           | exp        | match =                       
+int id = exp , id ; float id = exp                 | init_decl_list' ; decls' $               | ,          | match exp                     
+int id = exp , id ; float id = exp                 | , init_decl init_decl_list' ; decls' $   | ,          | output init_decl_list' -> , init_decl init_decl_list' 
+int id = exp , id ; float id = exp ,               | init_decl init_decl_list' ; decls' $     | id         | match ,                       
+int id = exp , id ; float id = exp ,               | id init_decl1 init_decl_list' ; decls' $  | id         | output init_decl -> id init_decl1 
+int id = exp , id ; float id = exp , id            | init_decl1 init_decl_list' ; decls' $    | ;          | match id                      
+int id = exp , id ; float id = exp , id            | init_decl_list' ; decls' $               | ;          | output init_decl1 -> ε       
+int id = exp , id ; float id = exp , id            | ; decls' $                               | ;          | output init_decl_list' -> ε  
+int id = exp , id ; float id = exp , id ;          | decls' $                                 | $          | match ;                       
+int id = exp , id ; float id = exp , id ;          | $                                        | $          | output decls' -> ε           
+int id = exp , id ; float id = exp , id ;          | $                                        | $          | accept                        

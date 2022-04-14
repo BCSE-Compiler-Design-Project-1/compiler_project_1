@@ -4,4 +4,4 @@ decl :- type init_decl_list ;
 init_decl_list :- init_decl | init_decl_list , init_decl
 init_decl :- id | id = exp
 type :- int | float | char
-int id = exp , id ; float id = exp , id ; $
+int id = , exp , id ; float id = exp , id ; $

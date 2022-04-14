@@ -1,0 +1,108 @@
+mul_exp' -> mul_OP pri_exp mul_exp' | ε 
+rel_exp' -> rel_OP add_exp rel_exp' | ε 
+mul_OP -> * | / | % 
+exp -> assignment_exp exp' 
+pri_exp -> ( exp ) | id | constant 
+assignment_exp -> equality_exp assignment_exp1 
+mul_exp -> pri_exp mul_exp' 
+assignment_exp1 -> = equality_exp | ε 
+add_OP -> + | - 
+add_exp' -> add_OP mul_exp add_exp' | ε 
+equality_exp' -> equality_OP rel_exp equality_exp' | ε 
+rel_exp -> add_exp rel_exp' 
+add_exp -> mul_exp add_exp' 
+exp' -> , assignment_exp exp' | ε 
+equality_OP -> == | != 
+rel_OP -> < | <= | > | >=  
+equality_exp -> rel_exp equality_exp' 
+
+
+assignment_exp1 - { 'ε' , '=' , }
+add_OP - { '-' , '+' , }
+mul_exp' - { 'ε' , '/' , '%' , '*' , }
+mul_OP - { '/' , '%' , '*' , }
+exp - { 'constant' , '(' , 'id' , }
+exp' - { 'ε' , ',' , }
+add_exp - { 'constant' , '(' , 'id' , }
+rel_exp' - { 'ε' , '>=' , '<' , '>' , '<=' , }
+pri_exp - { 'constant' , 'id' , '(' , }
+rel_OP - { '>=' , '>' , '<=' , '<' , }
+equality_exp - { 'constant' , '(' , 'id' , }
+assignment_exp - { 'constant' , '(' , 'id' , }
+mul_exp - { 'constant' , '(' , 'id' , }
+equality_exp' - { 'ε' , '!=' , '==' , }
+rel_exp - { 'constant' , '(' , 'id' , }
+add_exp' - { 'ε' , '-' , '+' , }
+equality_OP - { '!=' , '==' , }
+
+
+
+mul_OP - { '(' , 'id' , 'constant' , }
+equality_OP - { 'id' , '(' , 'constant' , }
+exp - { ')' , '$' , }
+add_OP - { 'id' , '(' , 'constant' , }
+assignment_exp1 - { ',' , ')' , '$' , }
+add_exp - { '!=' , '=' , '$' , '>=' , '==' , '<' , ')' , '>' , ',' , '<=' , }
+exp' - { '$' , ')' , }
+pri_exp - { '+' , '==' , '!=' , '-' , '=' , '>=' , '$' , ')' , '>' , '<=' , '<' , ',' , '*' , '%' , '/' , }
+rel_OP - { 'id' , '(' , 'constant' , }
+equality_exp - { ',' , ')' , '$' , '=' , }
+rel_exp' - { '==' , '!=' , '=' , ',' , ')' , '$' , }
+rel_exp - { '$' , ')' , ',' , '=' , '!=' , '==' , }
+equality_exp' - { '=' , '$' , ')' , ',' , }
+add_exp' - { '<=' , ',' , '>' , ')' , '<' , '==' , '>=' , '$' , '=' , '!=' , }
+assignment_exp - { '$' , ')' , ',' , }
+mul_exp - { '<=' , ',' , '>' , ')' , '>=' , '$' , '=' , '!=' , '-' , '<' , '==' , '+' , }
+mul_exp' - { '+' , '==' , '<' , '-' , '!=' , '=' , '$' , '>=' , ')' , '>' , ',' , '<=' , }
+
+
+
+exp                      -1      0      0     -1      0     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2
+assignment_exp           -1      1      1     -1      1     -2     -2     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2
+equality_exp             -1      2      2     -1      2     -2     -2     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     -1     -2
+equality_OP              -1     -1     -1     -2     -1     -2     -2     -2      4      3     -2     -2     -2     -2     -2     -2     -2     -2     -2
+rel_exp                  -1      5      5     -1      5     -2     -2     -2     -1     -1     -2     -1     -2     -2     -2     -2     -2     -1     -2
+rel_OP                   -1     -1     -1     -2     -1     -2     -2      7     -2     -2     -2     -2      6     -2      8      9     -2     -2     -2
+add_exp                  -1     10     10     -1     10     -2     -2     -1     -1     -1     -2     -1     -1     -2     -1     -1     -2     -1     -2
+add_OP                   -1     -1     -1     -2     -1     -2     -2     -2     -2     -2     11     -2     -2     -2     -2     -2     -2     -2     12
+mul_exp                  -1     13     13     -1     13     -2     -2     -1     -1     -1     -1     -1     -1     -2     -1     -1     -2     -1     -1
+mul_OP                   -1     -1     -1     -2     -1     16     15     -2     -2     -2     -2     -2     -2     14     -2     -2     -2     -2     -2
+pri_exp                  -1     19     18     -1     17     -1     -1     -1     -1     -1     -1     -1     -1     -1     -1     -1     -2     -1     -1
+assignment_exp1          21     -2     -2     21     -2     -2     -2     -2     -2     -2     -2     21     -2     -2     -2     -2     -2     20     -2
+exp'                     23     -2     -2     23     -2     -2     -2     -2     -2     -2     -2     22     -2     -2     -2     -2     -2     -2     -2
+equality_exp'            25     -2     -2     25     -2     -2     -2     -2     24     24     -2     25     -2     -2     -2     -2     -2     25     -2
+rel_exp'                 27     -2     -2     27     -2     -2     -2     26     27     27     -2     27     26     -2     26     26     -2     27     -2
+add_exp'                 29     -2     -2     29     -2     -2     -2     29     29     29     28     29     29     -2     29     29     -2     29     28
+mul_exp'                 31     -2     -2     31     -2     30     30     31     31     31     31     31     31     30     31     31     -2     31     31
+
+
+MATCHED                                            | STACK                                    | INPUT      | ACTION                        
+                                                   | exp $                                    | )          | push exp                      
+                                                   | exp $                                    | )          | error skip )                  
+                                                   | assignment_exp exp' $                    | id         | output exp -> assignment_exp exp' 
+                                                   | equality_exp assignment_exp1 exp' $      | id         | output assignment_exp -> equality_exp assignment_exp1 
+                                                   | rel_exp equality_exp' assignment_exp1 exp' $  | id         | output equality_exp -> rel_exp equality_exp' 
+                                                   | add_exp rel_exp' equality_exp' assignment_exp1 exp' $  | id         | output rel_exp -> add_exp rel_exp' 
+                                                   | mul_exp add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | id         | output add_exp -> mul_exp add_exp' 
+                                                   | pri_exp mul_exp' add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | id         | output mul_exp -> pri_exp mul_exp' 
+                                                   | id mul_exp' add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | id         | output pri_exp -> id          
+id                                                 | mul_exp' add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | *          | match id                      
+id                                                 | mul_OP pri_exp mul_exp' add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | *          | output mul_exp' -> mul_OP pri_exp mul_exp' 
+id                                                 | * pri_exp mul_exp' add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | *          | output mul_OP -> *            
+id *                                               | pri_exp mul_exp' add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | +          | match *                       
+id *                                               | mul_exp' add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | +          | error M[mul_exp', '+' ] = pop 
+id *                                               | add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | +          | output mul_exp' -> ε         
+id *                                               | add_OP mul_exp add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | +          | output add_exp' -> add_OP mul_exp add_exp' 
+id *                                               | + mul_exp add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | +          | output add_OP -> +            
+id * +                                             | mul_exp add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | id         | match +                       
+id * +                                             | pri_exp mul_exp' add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | id         | output mul_exp -> pri_exp mul_exp' 
+id * +                                             | id mul_exp' add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | id         | output pri_exp -> id          
+id * + id                                          | mul_exp' add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | (          | match id                      
+id * + id                                          | mul_exp' add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | (          | error M[mul_exp', '(' ] = scan
+id * + id                                          | add_exp' rel_exp' equality_exp' assignment_exp1 exp' $  | $          | output mul_exp' -> ε         
+id * + id                                          | rel_exp' equality_exp' assignment_exp1 exp' $  | $          | output add_exp' -> ε         
+id * + id                                          | equality_exp' assignment_exp1 exp' $     | $          | output rel_exp' -> ε         
+id * + id                                          | assignment_exp1 exp' $                   | $          | output equality_exp' -> ε    
+id * + id                                          | exp' $                                   | $          | output assignment_exp1 -> ε  
+id * + id                                          | $                                        | $          | output exp' -> ε             
+id * + id                                          | $                                        | $          | accept                        

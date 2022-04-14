@@ -10,4 +10,7 @@ add_OP :- + | -
 mul_exp :- mul_exp mul_OP pri_exp | pri_exp
 mul_OP :- * | / | %
 pri_exp :- ( exp ) | id | constant
+) id * + id ( $
+
+
 id = id , id = ( id + ( id * id ) - id ) / constant $  
