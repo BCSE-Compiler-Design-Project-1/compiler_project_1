@@ -1,0 +1,49 @@
+void main ( ) 
+{ 
+    int a ; 
+    int b ; 
+    int c ; 
+    a = 5 ; 
+    b = 7 ; 
+    c = 10 ; 
+    if ( a >= 5 ) then 
+    { 
+        int x ; 
+        x = 10 ; 
+        if ( x >= 10 ) then 
+        { 
+            int y ; 
+            y = 20 ; 
+        } 
+        else 
+        { 
+            int z ; 
+            z = 30 ; 
+        } 
+    } 
+    else 
+    { 
+        int m ; 
+        m = 10 ; 
+        if ( m >= 10 ) then 
+        { 
+            int n ; 
+            n = 20 ; 
+            if ( n >= 50 ) then 
+            { 
+                float y ; 
+                y = 14.23 ; 
+            } 
+        } 
+        else 
+        { 
+            int o ;
+            o = 30 ;  
+            if ( o >= 50 ) then 
+            { 
+                float x ; 
+                x = 15.23 ; 
+            }          
+        } 
+    } 
+} 
