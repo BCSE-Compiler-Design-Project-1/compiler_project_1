@@ -1,6 +1,8 @@
 #include <stack>
 #include <fstream>
 #include "LL1grammer.hpp"
+#include "n-aryTree.hpp"
+
 class LL1pr
 {
 private:
@@ -16,6 +18,9 @@ private:
     string startSym;
     int nTcount = 0;
     int Tcount = 0;
+    // int node_count = 1;
+    // tnode root;
+    // vector<bool> flag;
     void printProd(const vector<string> &);
     void firstNTL(const string &);
     bool firstRHS(const string &, int, unordered_set<string> &);
@@ -31,6 +36,7 @@ public:
         this->terminals = gr.getT();
         this->parsed_prod = gr.getParsedProd();
         this->startSym = gr.getStartSym();
+        // this->root = tnode(this->startSym);
         this->nTcount = this->non_terminals.size();
         this->Tcount = this->terminals.size();
         this->follow_dep.resize(this->nTcount);
@@ -289,6 +295,7 @@ void LL1pr::parser()
     parsing_st.push(startSym);
     curr_st.push_back("$");
     curr_st.push_back(startSym);
+    // tnode *prev_node = &root, *curr_node = nullptr;
     string curr_token;
     bool flag = true;
     cin >> curr_token;
@@ -331,7 +338,10 @@ void LL1pr::parser()
                     }
                 action = "output " + prods[temp.first] + " -> ";
                 for (auto it = prod.begin(); it != prod.end(); it++)
+                {
                     action += *it + " ";
+                    // curr_node->root.push_back(new tnode(*it));
+                }
                 printParsing(matched, curr_st, curr_token, action);
             }
             else if (prod_num == -1)
