@@ -1,17 +1,15 @@
 #include "LL1parser.hpp"
-int main()
+int main(int argc, char **argv)
 {
-    LL1gr gr = LL1gr();
+    if (argc != 3)
+        exit(1);
+    LL1gr gr = LL1gr(argv[1], argv[2]);
     gr.readGrammar();
     gr.ll1ifyGrammar();
     gr.printGrammar();
-    cout << "\n\n";
-    LL1pr pr = LL1pr(gr);
+    LL1pr pr = LL1pr(gr, argv[3], argv[2]);
     pr.firstUtil();
-    cout << "\n\n";
     pr.followUtil();
-    cout << "\n\n";
     pr.fillParsingTable();
-    cout << "\n\n";
     pr.parser();
 }

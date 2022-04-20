@@ -79,18 +79,3 @@ pri_exp :- id
 pri_exp :- constant
 constant :- number
 constant :- real
-void main ( ) { 
-    int id = exp , id ;
-    float id ; 
-    IF ( id || number && id ) THEN {
-        cin >> id >> id ;
-        IF ( exp ) THEN id = id + id ;
-        ELSE IF ( exp ) THEN  id = id * id ;
-        ELSE id = number ;
-    } ELSE IF ( exp ) THEN {
-        cout << number << id << ( id + ( id * id ) - id ) / number ;
-        IF ( exp ) THEN id = id - number ;
-        IF ( exp ) THEN cout << id ; 
-        ELSE id = id % number ;
-    } ELSE id = id / number ;
-} $
