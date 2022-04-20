@@ -4,12 +4,14 @@ void main ( ) {
     IF ( id || number && id ) THEN {
         cin >> id >> id ;
         IF ( exp ) THEN id = id + real ;
-        ELSE IF ( exp ) THEN  id = id * id ;
+        ELSE IF ( id + number > real ) THEN  id = id * id ;
         ELSE id = number ;
     } ELSE IF ( exp ) THEN {
         cout << number << id << ( id + ( id * id ) - id ) / number ;
         IF ( exp ) THEN id = id - number ;
         IF ( exp ) THEN cout << id ; 
         ELSE id = id % number ;
-    } ELSE id = id / number ;
+    } ELSE {
+        id = id / number ;
+    }
 } $

@@ -1,4 +1,4 @@
-80
+79
 start :- void main ( ) compound_stmt
 stmt :- compound_stmt
 stmt :- exp_stmt
@@ -64,7 +64,7 @@ rel_exp :- add_exp
 rel_OP :- <
 rel_OP :- <=
 rel_OP :- >
-rel_OP :- >=   
+rel_OP :- >=
 add_exp :- add_exp add_OP mul_exp
 add_exp :- mul_exp
 add_OP :- +
@@ -76,6 +76,5 @@ mul_OP :- /
 mul_OP :- %
 pri_exp :- ( exp )
 pri_exp :- id
-pri_exp :- constant
-constant :- number
-constant :- real
+pri_exp :- number
+pri_exp :- real

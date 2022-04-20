@@ -19,7 +19,6 @@ private:
     int nTcount = 0;
     int Tcount = 0;
     ifstream inpFile;
-    ofstream outFile;
     // int node_count = 1;
     // tnode root;
     // vector<bool> flag;
@@ -32,10 +31,9 @@ private:
     void printParsing(const string &, const vector<string> &, const string &, const string &);
 
 public:
-    LL1pr(LL1gr &gr, char *file1, char *file2)
+    LL1pr(LL1gr &gr, string file1)
     {
         inpFile.open(file1, ios::in);
-        outFile.open(file2, ios::out | ios::app | ios::ate);
         this->non_terminals = gr.getNt();
         this->terminals = gr.getT();
         this->parsed_prod = gr.getParsedProd();
@@ -50,13 +48,13 @@ public:
         int count = 0;
         for (auto it : this->prods)
         {
-            // outFile << it << " " << non_terminals[it] << "  ";
+            // cout << it << " " << non_terminals[it] << "  ";
             for (int i = 0; i < this->parsed_prod[it].size(); i++)
             {
-                // outFile << count << " " << it << " " << i << "   ";
+                // cout << count << " " << it << " " << i << "   ";
                 productions[count++] = {non_terminals[it], i};
             }
-            // outFile << "\n\n";
+            // cout << "\n\n";
         }
         parsing_table.resize(non_terminals.size());
         for (auto &it : parsing_table)
@@ -65,7 +63,7 @@ public:
         for (auto &it : terminals)
         {
             it.second = i++;
-            // outFile << it.first << " " << it.second << "\n";
+            // cout << it.first << " " << it.second << "\n";
         }
     }
     void firstUtil();
@@ -79,21 +77,21 @@ void LL1pr::printGrammar()
 {
     for (auto it : parsed_prod)
     {
-        outFile << it.first << " -> ";
+        cout << it.first << " -> ";
         printProd(it.second[0]);
         for (int i = 1; i < it.second.size(); ++i)
         {
-            outFile << "| ";
+            cout << "| ";
             printProd(it.second[i]);
         }
-        outFile << "\n";
+        cout << "\n";
     }
 }
 
 void LL1pr::printProd(const vector<string> &pr)
 {
     for (auto it : pr)
-        outFile << it << " ";
+        cout << it << " ";
 }
 
 void LL1pr::firstUtil()
@@ -105,12 +103,12 @@ void LL1pr::firstUtil()
     }
     for (auto it : FIRST)
     {
-        outFile << it.first << " - {";
+        cout << it.first << " - {";
         for (auto it1 : it.second)
-            outFile << " '" << it1 << "' ,";
-        outFile << " }\n";
+            cout << " '" << it1 << "' ,";
+        cout << " }\n";
     }
-    outFile << "\n\n";
+    cout << "\n\n";
 }
 bool LL1pr::firstRHS(const string &s, int i, unordered_set<string> &first)
 {
@@ -125,14 +123,14 @@ bool LL1pr::firstRHS(const string &s, int i, unordered_set<string> &first)
     {
         if (terminals.find(it1) != terminals.end())
         {
-            // outFile << it1 << "\n";
+            // cout << it1 << "\n";
             first.insert(it1);
             flag = false;
             break;
         }
         else
         {
-            // outFile << it1 << "\n";
+            // cout << it1 << "\n";
             if (FIRST.find(it1) == FIRST.end())
                 firstNTL(it1);
             unordered_set<string> temp(FIRST[it1].begin(), FIRST[it1].end());
@@ -171,12 +169,12 @@ void LL1pr::followUtil()
     topologicalSort();
     for (auto it : FOLLOW)
     {
-        outFile << it.first << " - {";
+        cout << it.first << " - {";
         for (auto it1 : it.second)
-            outFile << " '" << it1 << "' ,";
-        outFile << " }\n";
+            cout << " '" << it1 << "' ,";
+        cout << " }\n";
     }
-    outFile << "\n\n";
+    cout << "\n\n";
 }
 void LL1pr::follow(const string &s)
 {
@@ -232,7 +230,7 @@ void LL1pr::topologicalSort()
         }
         Stack.pop();
     }
-    outFile << "\n";
+    cout << "\n";
 }
 
 void LL1pr::topologicalSortUtil(int v, vector<bool> &visited, stack<int> &Stack)
@@ -277,19 +275,19 @@ void LL1pr::fillParsingTable()
             if (it.first != EPSILON && this->parsing_table[i][it.second] == -1 && FIRST[prods[i]].find(it.first) == FIRST[prods[i]].end() && FOLLOW[prods[i]].find(it.first) == FOLLOW[prods[i]].end())
                 this->parsing_table[i][it.second] = -2;
     }
-    outFile << "\n";
+    cout << "\n";
     for (auto i = 0; i < nTcount; ++i)
     {
-        outFile.width(20);
-        outFile << left << prods[i];
+        cout.width(20);
+        cout << left << prods[i];
         for (auto j = 0; j < Tcount; ++j)
         {
-            outFile.width(7);
-            outFile << right << parsing_table[i][j];
+            cout.width(7);
+            cout << right << parsing_table[i][j];
         }
-        outFile << "\n";
+        cout << "\n";
     }
-    outFile << "\n\n";
+    cout << "\n\n";
 }
 
 void LL1pr::parser()
@@ -313,7 +311,7 @@ void LL1pr::parser()
         {
             if (curr_token == "$")
             {
-                // outFile << "accepted.\n";
+                // cout << "accepted.\n";
                 action = "accept";
                 flag = false;
             }
@@ -376,21 +374,20 @@ void LL1pr::parser()
         }
     } while (flag);
     inpFile.close();
-    outFile.close();
 }
 
 void LL1pr::printParsing(const string &matched, const vector<string> &curr_st, const string &input_token, const string &action)
 {
-    outFile.width(50);
-    outFile << left << matched << " | ";
+    cout.width(50);
+    cout << left << matched << " | ";
     string st = "";
     for (auto it = curr_st.rbegin(); it != curr_st.rend(); it++)
         st += *it + " ";
-    outFile.width(40);
-    outFile << left << st << " | ";
-    outFile.width(10);
-    outFile << left << input_token << " | ";
-    outFile.width(30);
-    outFile << left << action;
-    outFile << endl;
+    cout.width(40);
+    cout << left << st << " | ";
+    cout.width(10);
+    cout << left << input_token << " | ";
+    cout.width(30);
+    cout << left << action;
+    cout << endl;
 }

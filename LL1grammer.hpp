@@ -21,7 +21,6 @@ private:
     void insertTl(string);
     void inserNtl(string);
     ifstream inpFile;
-    ofstream outFile;
     void printProd(const vector<string> &);
     vector<vector<string>> parse(const string &);
     vector<string> parse2(const string &);
@@ -31,10 +30,9 @@ private:
     void remLR_indir();
 
 public:
-    LL1gr(char *file1, char *file2)
+    LL1gr(string file1)
     {
         inpFile.open(file1, ios::in);
-        outFile.open(file2, ios::trunc | ios::out);
     }
     void readGrammar();
     void printGrammar();
@@ -61,23 +59,22 @@ void LL1gr::printGrammar()
 {
     for (auto it : parsed_prod)
     {
-        outFile << it.first << " -> ";
+        cout << it.first << " -> ";
         printProd(it.second[0]);
         for (int i = 1; i < it.second.size(); ++i)
         {
-            outFile << "| ";
+            cout << "| ";
             printProd(it.second[i]);
         }
-        outFile << "\n";
+        cout << "\n";
     }
-    outFile << "\n\n";
-    outFile.close();
+    cout << "\n\n";
 }
 
 void LL1gr::printProd(const vector<string> &pr)
 {
     for (auto it : pr)
-        outFile << it << " ";
+        cout << it << " ";
 }
 
 void LL1gr::insertTl(string tl)
