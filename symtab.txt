@@ -1,0 +1,30 @@
+Symbol Table for the exiting block: 
+Identifier : y ---> Data Type : int , Scope Number : 3
+
+Symbol Table for the exiting block: 
+Identifier : z ---> Data Type : int , Scope Number : 3
+
+Symbol Table for the exiting block: 
+Identifier : x ---> Data Type : int , Scope Number : 2
+
+Symbol Table for the exiting block: 
+Identifier : y ---> Data Type : float , Scope Number : 4
+
+Symbol Table for the exiting block: 
+Identifier : n ---> Data Type : int , Scope Number : 3
+
+Symbol Table for the exiting block: 
+Identifier : x ---> Data Type : float , Scope Number : 4
+
+Symbol Table for the exiting block: 
+Identifier : o ---> Data Type : int , Scope Number : 3
+
+Symbol Table for the exiting block: 
+Identifier : m ---> Data Type : int , Scope Number : 2
+
+Symbol Table for the exiting block: 
+Identifier : d ---> Data Type : int , Scope Number : 1
+Identifier : c ---> Data Type : int , Scope Number : 1
+Identifier : a ---> Data Type : int , Scope Number : 1
+Identifier : b ---> Data Type : int , Scope Number : 1
+
