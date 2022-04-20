@@ -14,8 +14,6 @@ regex regex_for_positive_int("[0-9]+");
 regex regex_for_positive_float("[0-9]+[.][0-9]+");
 regex regex_for_negative_float("[-][0-9]+[.][0-9]+");
 
-regex regex_for_type("int|float");
-
 int main()
 {
     string fileName;
@@ -32,8 +30,6 @@ int main()
     while (getline(file, tp))
     {
         tp = regex_replace(tp, regex_for_identifier, "id");
-
-        tp = regex_replace(tp, regex_for_type, "TYPE");
 
         tp = regex_replace(tp, regex_for_negative_float, "real");
         tp = regex_replace(tp, regex_for_positive_float, "real");
