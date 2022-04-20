@@ -1,17 +1,16 @@
 void main ( ) 
 { 
-    int id = number ; 
     int id ; 
+    int id ;
     int id ; 
     id = number ; 
     id = number ; 
     id = number ; 
-    id = id * id + id ;
-    IF ( id >= number + real ) THEN 
+    IF ( id >= number ) THEN 
     { 
         int id ; 
         id = number ; 
-        IF ( id < id - real ) THEN 
+        IF ( id >= number ) THEN
         { 
             int id ; 
             id = number ; 
@@ -21,5 +20,6 @@ void main ( )
             int id ; 
             id = number ; 
         } 
-    } 
-} $
+    }
+}
+$

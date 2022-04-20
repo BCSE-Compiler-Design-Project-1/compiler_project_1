@@ -1,8 +1,17 @@
 #include "LL1parser.hpp"
 int main()
 {
-    string grammar, sentence;
-    cin >> grammar >> sentence;
+    string grammar, sentence, filename;
+    int cnt = 0;
+
+    while (getline(cin, filename))
+    {
+        if (cnt == 0)
+            grammar = filename;
+        else if (cnt == 1)
+            sentence = filename;
+        cnt++;
+    }
     LL1gr gr = LL1gr(grammar);
     gr.readGrammar();
     gr.ll1ifyGrammar();

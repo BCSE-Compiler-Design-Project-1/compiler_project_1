@@ -1,0 +1,573 @@
+add_exp' -> add_OP mul_exp add_exp' | ε 
+rel_exp' -> rel_OP add_exp rel_exp' | ε 
+equality_exp' -> equality_OP rel_exp equality_exp' | ε 
+logical_or_exp' -> logical_OR logical_and_exp logical_or_exp' | ε 
+init_decl_list' -> , init_decl init_decl_list' | ε 
+decl -> type init_decl_list ; 
+logical_AND -> && 
+write_stmts' -> write_stmt write_stmts' | ε 
+exp' -> , assignment_exp exp' | ε 
+read_stmts' -> read_stmt read_stmts' | ε 
+other -> compound_stmt | exp_stmt | read_stmt | write_stmt 
+start -> void main ( ) compound_stmt 
+compound_stmt2 -> } | { compound_stmt1 stmts' } | ; stmts' } | ( exp ) mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } | id mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } | number mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } | real mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } | cin inputs read_stmts' stmts' } | cout outputs write_stmts' stmts' } | IF ( exp ) THEN other optional_tail stmts' } 
+inputs -> INP_OP id inputs1 
+stmts' -> stmt stmts' | ε 
+logical_and_exp' -> logical_AND equality_exp logical_and_exp' | ε 
+inputs1 -> >> id inputs1 | ; 
+write_stmt -> cout outputs 
+exp -> assignment_exp exp' 
+INP_OP -> >> 
+stmts -> compound_stmt stmts' | exp_stmt stmts' | read_stmts stmts' | write_stmts stmts' | sel_stmt stmts' 
+outputs -> OUT_OP exp outputs1 
+mul_exp -> pri_exp mul_exp' 
+outputs1 -> << exp outputs1 | ; 
+init_decl_list -> init_decl init_decl_list' 
+init_decl1 -> ε | = exp 
+init_decl -> id init_decl1 
+decls' -> decl decls' | ε 
+OUT_OP -> << 
+logical_or_exp -> logical_and_exp logical_or_exp' 
+logical_OR -> || 
+mul_OP -> * | / | % 
+compound_stmt -> { compound_stmt1 
+add_exp -> mul_exp add_exp' 
+write_stmts -> write_stmt write_stmts' 
+pri_exp -> ( exp ) | id | number | real 
+optional_tail -> ELSE tail | IF ( exp ) THEN other optional_tail | ε 
+equality_OP -> == | != 
+add_OP -> + | - 
+equality_exp -> rel_exp equality_exp' 
+assignment_exp1 -> = assignment_exp | ε 
+rel_exp -> add_exp rel_exp' 
+read_stmts -> read_stmt read_stmts' 
+tail -> { compound_stmt1 | ; | exp ; | cin inputs | cout outputs | IF ( exp ) THEN other optional_tail 
+decls -> decl decls' 
+sel_stmt -> IF ( exp ) THEN other optional_tail 
+assignment_exp -> logical_or_exp assignment_exp1 
+type -> int | float | char 
+mul_exp' -> mul_OP pri_exp mul_exp' | ε 
+read_stmt -> cin inputs 
+stmt -> compound_stmt | exp_stmt | read_stmts | write_stmts | sel_stmt 
+logical_and_exp -> equality_exp logical_and_exp' 
+exp_stmt -> ; | exp ; 
+rel_OP -> < | <= | > | >= 
+compound_stmt1 -> } | { compound_stmt1 stmts' } | ; stmts' } | ( exp ) mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } | id mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } | number mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } | real mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } | cin inputs read_stmts' stmts' } | cout outputs write_stmts' stmts' } | IF ( exp ) THEN other optional_tail stmts' } | int init_decl_list ; decls' compound_stmt2 | float init_decl_list ; decls' compound_stmt2 | char init_decl_list ; decls' compound_stmt2 
+
+
+init_decl_list - { 'id' , }
+logical_or_exp' - { '||' , 'ε' , }
+init_decl_list' - { ',' , 'ε' , }
+read_stmts' - { 'cin' , 'ε' , }
+exp' - { ',' , 'ε' , }
+add_exp' - { '+' , '-' , 'ε' , }
+compound_stmt2 - { '}' , '{' , 'cin' , '(' , 'id' , ';' , 'number' , 'real' , 'cout' , 'IF' , }
+write_stmts' - { 'cout' , 'ε' , }
+decl - { 'int' , 'float' , 'char' , }
+logical_AND - { '&&' , }
+logical_OR - { '||' , }
+logical_and_exp' - { '&&' , 'ε' , }
+inputs1 - { '>>' , ';' , }
+rel_exp' - { '<' , '<=' , '>' , '>=' , 'ε' , }
+stmts' - { '(' , 'id' , 'cin' , '{' , ';' , 'number' , 'ε' , 'real' , 'cout' , 'IF' , }
+mul_exp - { '(' , 'id' , 'number' , 'real' , }
+outputs1 - { '<<' , ';' , }
+decls' - { 'int' , 'float' , 'ε' , 'char' , }
+init_decl1 - { 'ε' , '=' , }
+init_decl - { 'id' , }
+add_OP - { '+' , '-' , }
+optional_tail - { 'ELSE' , 'IF' , 'ε' , }
+equality_OP - { '==' , '!=' , }
+read_stmts - { 'cin' , }
+tail - { '{' , 'cin' , '(' , 'id' , ';' , 'number' , 'real' , 'cout' , 'IF' , }
+logical_or_exp - { '(' , 'id' , 'number' , 'real' , }
+OUT_OP - { '<<' , }
+outputs - { '<<' , }
+stmts - { '{' , 'cin' , '(' , 'id' , ';' , 'number' , 'real' , 'cout' , 'IF' , }
+read_stmt - { 'cin' , }
+mul_exp' - { '*' , '%' , '/' , 'ε' , }
+rel_exp - { '(' , 'id' , 'number' , 'real' , }
+assignment_exp1 - { '=' , 'ε' , }
+mul_OP - { '*' , '%' , '/' , }
+add_exp - { '(' , 'id' , 'number' , 'real' , }
+compound_stmt - { '{' , }
+logical_and_exp - { '(' , 'id' , 'number' , 'real' , }
+stmt - { '{' , 'cin' , '(' , 'id' , ';' , 'number' , 'real' , 'cout' , 'IF' , }
+exp_stmt - { ';' , 'number' , 'real' , '(' , 'id' , }
+rel_OP - { '<' , '<=' , '>' , '>=' , }
+INP_OP - { '>>' , }
+write_stmts - { 'cout' , }
+pri_exp - { '(' , 'id' , 'number' , 'real' , }
+decls - { 'int' , 'float' , 'char' , }
+assignment_exp - { '(' , 'id' , 'number' , 'real' , }
+sel_stmt - { 'IF' , }
+inputs - { '>>' , }
+equality_exp - { '(' , 'id' , 'number' , 'real' , }
+start - { 'void' , }
+other - { '{' , 'cin' , '(' , 'id' , ';' , 'number' , 'real' , 'cout' , }
+write_stmt - { 'cout' , }
+exp - { '(' , 'id' , 'number' , 'real' , }
+equality_exp' - { '==' , '!=' , 'ε' , }
+compound_stmt1 - { '{' , 'cin' , '(' , 'id' , ';' , 'number' , 'real' , 'cout' , 'float' , 'IF' , 'char' , 'int' , '}' , }
+type - { 'int' , 'float' , 'char' , }
+
+
+
+stmts - { }
+decls - { }
+add_OP - { 'id' , '(' , 'real' , 'number' , }
+rel_OP - { 'id' , '(' , 'real' , 'number' , }
+logical_OR - { 'id' , '(' , 'number' , 'real' , }
+compound_stmt2 - { '}' , 'number' , 'cout' , 'IF' , '$' , 'real' , ';' , 'cin' , '{' , 'id' , '(' , }
+write_stmts - { '(' , 'id' , '{' , 'cin' , ';' , 'number' , 'real' , 'cout' , 'IF' , '}' , }
+pri_exp - { '}' , 'cout' , '$' , '/' , ';' , '&&' , '>=' , '%' , '{' , '>' , ',' , '=' , '*' , 'number' , '<' , 'real' , '<<' , ')' , '(' , '==' , 'id' , '!=' , 'IF' , '-' , '||' , '<=' , 'cin' , '+' , }
+read_stmt - { 'cin' , '{' , 'ELSE' , '}' , 'IF' , 'cout' , 'real' , '$' , 'number' , ';' , 'id' , '(' , }
+mul_exp' - { '==' , 'id' , '!=' , 'IF' , '>' , '+' , '<=' , 'cin' , '||' , '-' , ',' , '=' , ';' , '&&' , '}' , 'number' , 'cout' , '$' , 'real' , '<' , '{' , '>=' , '(' , '<<' , ')' , }
+mul_OP - { 'id' , '(' , 'real' , 'number' , }
+compound_stmt - { '(' , 'id' , '{' , 'ELSE' , 'cin' , ';' , 'number' , 'real' , '$' , 'cout' , 'IF' , '}' , }
+add_exp - { '<' , 'cout' , '<=' , 'cin' , '$' , '>=' , '&&' , '>' , '}' , ',' , '=' , 'number' , 'real' , '<<' , '{' , '(' , ')' , ';' , '==' , 'id' , '||' , 'IF' , '!=' , }
+assignment_exp1 - { ',' , ';' , 'number' , '}' , 'cout' , 'IF' , '$' , 'real' , '<<' , 'cin' , '{' , 'id' , '(' , ')' , }
+rel_exp - { '!=' , 'IF' , '||' , 'id' , '==' , ';' , ')' , '(' , '{' , 'cin' , '<<' , 'real' , '$' , 'cout' , 'number' , '=' , ',' , '}' , '&&' , }
+equality_exp - { '&&' , '}' , ',' , '=' , 'number' , 'cout' , 'IF' , '$' , 'real' , '<<' , 'cin' , '{' , '(' , ')' , ';' , 'id' , '||' , }
+inputs1 - { '}' , 'number' , 'cout' , 'IF' , '$' , 'real' , ';' , 'cin' , '{' , 'ELSE' , 'id' , '(' , }
+logical_and_exp' - { '||' , '}' , ',' , '=' , ';' , 'number' , 'cout' , 'IF' , '$' , 'real' , '<<' , 'cin' , '{' , 'id' , '(' , ')' , }
+OUT_OP - { 'id' , '(' , 'number' , 'real' , }
+logical_or_exp - { '=' , ',' , '}' , 'number' , 'cout' , 'IF' , '$' , 'real' , '<<' , 'cin' , '{' , 'id' , ')' , '(' , ';' , }
+read_stmts' - { '(' , 'id' , '{' , 'cin' , ';' , 'real' , '$' , 'IF' , 'cout' , 'number' , '}' , }
+exp' - { ';' , ',' , ')' , '<<' , }
+other - { 'IF' , 'cout' , '(' , 'id' , 'cin' , '{' , 'ELSE' , ';' , 'real' , 'number' , '}' , '$' , }
+add_exp' - { '<' , '==' , 'id' , '<=' , 'cin' , '>' , '>=' , '&&' , '!=' , 'IF' , '||' , ',' , '=' , ';' , '}' , 'number' , 'cout' , '$' , 'real' , '<<' , '{' , '(' , ')' , }
+init_decl1 - { ';' , ',' , }
+init_decl - { ',' , ';' , }
+init_decl_list' - { ';' , }
+read_stmts - { '(' , 'id' , '{' , 'cin' , ';' , 'number' , 'real' , 'cout' , 'IF' , '}' , }
+tail - { '}' , 'number' , 'cout' , 'IF' , '$' , 'real' , ';' , 'cin' , '{' , 'id' , '(' , }
+logical_AND - { 'id' , '(' , 'number' , 'real' , }
+write_stmts' - { '(' , 'id' , '{' , 'cin' , ';' , 'real' , '$' , 'IF' , 'cout' , 'number' , '}' , }
+decl - { 'int' , '}' , ';' , 'IF' , 'char' , 'cout' , 'float' , 'number' , 'real' , '(' , 'id' , '{' , 'cin' , }
+decls' - { '}' , 'cin' , '{' , 'id' , '(' , 'real' , 'number' , ';' , 'cout' , 'IF' , }
+outputs - { '(' , 'id' , '{' , 'ELSE' , 'cin' , ';' , 'real' , '$' , 'IF' , 'cout' , 'number' , '}' , }
+INP_OP - { 'id' , }
+inputs - { '(' , 'id' , '{' , 'ELSE' , 'cin' , ';' , 'real' , '$' , 'IF' , 'cout' , 'number' , '}' , }
+logical_or_exp' - { '}' , ',' , '=' , ';' , 'number' , 'cout' , 'IF' , '$' , 'real' , '<<' , 'cin' , '{' , 'id' , '(' , ')' , }
+init_decl_list - { ';' , }
+equality_OP - { 'id' , '(' , 'real' , 'number' , }
+optional_tail - { '(' , 'id' , '{' , 'cin' , ';' , 'real' , '$' , 'IF' , 'cout' , 'number' , '}' , }
+equality_exp' - { '&&' , '||' , '=' , ',' , ';' , '}' , 'number' , 'cout' , 'IF' , '$' , 'real' , '<<' , 'cin' , '{' , 'id' , '(' , ')' , }
+compound_stmt1 - { '(' , 'id' , '{' , 'cin' , ';' , 'real' , '$' , 'IF' , 'cout' , 'number' , '}' , }
+mul_exp - { '+' , 'cin' , '<=' , '||' , '-' , 'IF' , '!=' , 'id' , '==' , '(' , ')' , '<<' , 'real' , '<' , 'number' , '=' , ',' , '}' , '>' , '&&' , ';' , '>=' , '{' , '$' , 'cout' , }
+outputs1 - { '}' , 'number' , 'cout' , 'IF' , '$' , 'real' , ';' , 'cin' , '{' , 'ELSE' , 'id' , '(' , }
+rel_exp' - { '==' , 'id' , '&&' , '||' , '=' , ',' , ';' , '}' , 'number' , 'cout' , 'IF' , '!=' , '$' , 'real' , '<<' , 'cin' , '{' , '(' , ')' , }
+stmts' - { '}' , }
+type - { 'id' , }
+exp - { '<<' , ';' , ')' , ',' , }
+write_stmt - { '}' , 'IF' , 'cout' , 'real' , '$' , 'number' , ';' , 'cin' , '{' , 'ELSE' , 'id' , '(' , }
+stmt - { '(' , 'id' , '{' , 'cin' , ';' , 'number' , 'real' , 'cout' , 'IF' , '}' , }
+logical_and_exp - { '||' , 'id' , ';' , ')' , '(' , '{' , 'cin' , '<<' , 'real' , '$' , 'IF' , 'cout' , 'number' , '}' , ',' , '=' , }
+exp_stmt - { '(' , 'id' , '{' , 'ELSE' , 'cin' , ';' , 'number' , 'real' , '$' , 'cout' , 'IF' , '}' , }
+assignment_exp - { ';' , ',' , '(' , ')' , 'id' , '{' , 'cin' , 'real' , '<<' , '$' , 'IF' , 'cout' , '}' , 'number' , }
+sel_stmt - { '(' , 'id' , '{' , 'cin' , ';' , 'number' , 'real' , 'cout' , 'IF' , '}' , }
+start - { '$' , }
+
+
+
+start                    -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2      0     -2     -2     -2     -2     -2     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2     -2
+stmt                     -2     -2     -2      3     -2     -2      2     -1     -2     -2     -2     -2     -2      1     -2      2     -2     -2     -2      4      5     -2     -2      2     -2     -2      2     -1     -2     -2      2     -2     -2     -2     -2     -2
+other                    -2     -2     -2      8     -2     -2      7     -1     -2     -2     -2     -2     -2      6     -1      7     -2     -2     -2      9     -1     -2     -2      7     -2     -2      7     -1     -2     -2      7     -2     -2     -2     -2     -2
+stmts                    -2     -2     -2     12     -2     -2     11     -2     -2     -2     -2     -2     -2     10     -2     11     -2     -2     -2     13     14     -2     -2     11     -2     -2     11     -1     -2     -2     11     -2     -2     -2     -2     -2
+compound_stmt            -2     -2     -2     -1     -2     -2     -1     -1     -2     -2     -2     -2     -2     15     -1     -1     -2     -2     -2     -1     -1     -2     -2     -1     -2     -2     -1     -1     -2     -2     -1     -2     -2     -2     -2     -2
+read_stmts               -2     -2     -2     16     -2     -2     -1     -1     -2     -2     -2     -2     -2     -1     -2     -1     -2     -2     -2     -1     -1     -2     -2     -1     -2     -2     -1     -1     -2     -2     -1     -2     -2     -2     -2     -2
+write_stmts              -2     -2     -2     -1     -2     -2     -1     -1     -2     -2     -2     -2     -2     -1     -2     -1     -2     -2     -2     17     -1     -2     -2     -1     -2     -2     -1     -1     -2     -2     -1     -2     -2     -2     -2     -2
+read_stmt                -2     -2     -2     18     -2     -2     -1     -1     -2     -2     -2     -2     -2     -1     -1     -1     -2     -2     -2     -1     -1     -2     -2     -1     -2     -2     -1     -1     -2     -2     -1     -2     -2     -2     -2     -2
+inputs                   -2     -2     -2     -1     -2     -2     -1     -1     -2     19     -2     -2     -2     -1     -1     -1     -2     -2     -2     -1     -1     -2     -2     -1     -2     -2     -1     -1     -2     -2     -1     -2     -2     -2     -2     -2
+INP_OP                   -2     -2     -2     -2     -2     -2     -2     -2     -2     20     -2     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2     -2
+write_stmt               -2     -2     -2     -1     -2     -2     -1     -1     -2     -2     -2     -2     -2     -1     -1     -1     -2     -2     -2     21     -1     -2     -2     -1     -2     -2     -1     -1     -2     -2     -1     -2     -2     -2     -2     -2
+outputs                  -2     -2     -2     -1     -2     -2     -1     -1     -2     -2     -2     -2     -2     -1     -1     -1     -2     -2     -2     -1     -1     -2     -2     -1     -2     -2     -1     -1     -2     -2     -1     -2     -2     -2     -2     22
+OUT_OP                   -2     -2     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2     -1     -2     -2     -1     -1     -2     -2     -2     -2     -2     -2     -2     23
+decls                    -2     -2     -2     -2     -2     -2     -2     -2     24     -2     -2     -2     -2     -2     -2     -2     -2     -2     24     -2     -2     24     -2     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2     -2
+decl                     -2     -2     -2     -1     -2     -2     -1     -1     25     -2     -2     -2     -2     -1     -2     -1     -2     -2     25     -1     -1     25     -2     -1     -2     -2     -1     -1     -2     -2     -1     -2     -2     -2     -2     -2
+init_decl_list           -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     26     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -1     -2     -2     -1     -2     -2     -2     -2     -2
+init_decl                -1     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     27     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -1     -2     -2     -1     -2     -2     -2     -2     -2
+type                     -2     -2     -2     -2     -2     -2     -2     -2     28     -2     -2     -2     -2     -2     -2     -1     -2     -2     29     -2     -2     30     -2     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2     -2
+exp_stmt                 -2     -2     -2     -1     -2     -2     32     -1     -2     -2     -2     -2     -2     -1     -1     32     -2     -2     -2     -1     -1     -2     -2     32     -2     -2     32     -1     -2     -2     31     -2     -2     -2     -2     -2
+sel_stmt                 -2     -2     -2     -1     -2     -2     -1     -1     -2     -2     -2     -2     -2     -1     -2     -1     -2     -2     -2     -1     33     -2     -2     -1     -2     -2     -1     -1     -2     -2     -1     -2     -2     -2     -2     -2
+optional_tail            -2     -2     -2     36     -2     -2     36     36     -2     -2     -2     -2     -2     36     34     36     -2     -2     -2     36     36     -2     -2     36     -2     -2     36     36     -2     -2     36     -2     -2     -2     -2     -2
+tail                     -2     -2     -2     40     -2     -2     39     -1     -2     -2     -2     -2     -2     37     -2     39     -2     -2     -2     41     42     -2     -2     39     -2     -2     39     -1     -2     -2     38     -2     -2     -2     -2     -2
+exp                      -1     -2     -2     -2     -2     -1     43     -2     -2     -2     -2     -2     -2     -2     -2     43     -2     -2     -2     -2     -2     -2     -2     43     -2     -2     43     -1     -2     -2     -1     -2     -2     -2     -2     -1
+assignment_exp           -1     -2     -2     -1     -2     -1     44     -1     -2     -2     -2     -2     -2     -1     -2     44     -2     -2     -2     -1     -1     -2     -2     44     -2     -2     44     -1     -2     -2     -1     -2     -2     -2     -2     -1
+logical_or_exp           -1     -2     -1     -1     -2     -1     45     -1     -2     -2     -2     -2     -2     -1     -2     45     -2     -2     -2     -1     -1     -2     -2     45     -2     -2     45     -1     -2     -2     -1     -2     -2     -2     -2     -1
+logical_OR               -2     -2     -2     -2     -2     -2     -1     -2     -2     -2     46     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2     -1     -2     -2     -1     -1     -2     -2     -2     -2     -2     -2     -2     -2
+logical_and_exp          -1     -2     -1     -1     -2     -1     47     -1     -2     -2     -1     -2     -2     -1     -2     47     -2     -2     -2     -1     -1     -2     -2     47     -2     -2     47     -1     -2     -2     -1     -2     -2     -2     -2     -1
+logical_AND              -2     -2     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2     -1     -2     -2     -1     -1     -2     -2     -2     48     -2     -2     -2     -2
+equality_exp             -1     -2     -1     -1     -2     -1     49     -1     -2     -2     -1     -2     -2     -1     -2     49     -2     -2     -2     -1     -1     -2     -2     49     -2     -2     49     -1     -2     -2     -1     -1     -2     -2     -2     -1
+equality_OP              -2     -2     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2     -2     -1     51     -2     -2     -2     -2     -2     50     -1     -2     -2     -1     -1     -2     -2     -2     -2     -2     -2     -2     -2
+rel_exp                  -1     -2     -1     -1     -2     -1     52     -1     -2     -2     -1     -2     -2     -1     -2     52     -1     -2     -2     -1     -1     -2     -1     52     -2     -2     52     -1     -2     -2     -1     -1     -2     -2     -2     -1
+rel_OP                   -2     -2     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     56     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2     -1     53     -2     -1     -1     -2     55     -2     -2     -2     -2     54     -2
+add_exp                  -1     -2     -1     -1     -2     -1     57     -1     -2     -2     -1     -2     -1     -1     -2     57     -1     -2     -2     -1     -1     -2     -1     57     -1     -2     57     -1     -2     -1     -1     -1     -2     -2     -1     -1
+add_OP                   -2     -2     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2     -1     -2     59     -1     -1     -2     -2     -2     -2     -2     58     -2     -2
+mul_exp                  -1     -2     -1     -1     -2     -1     60     -1     -2     -2     -1     -2     -1     -1     -2     60     -1     -2     -2     -1     -1     -2     -1     60     -1     -1     60     -1     -2     -1     -1     -1     -2     -1     -1     -1
+mul_OP                   -2     61     -2     -2     -2     -2     -1     -2     -2     -2     -2     63     -2     -2     -2     -1     -2     -2     -2     -2     -2     -2     -2     -1     -2     -2     -1     -1     -2     -2     -2     -2     62     -2     -2     -2
+pri_exp                  -1     -1     -1     -1     -2     -1     64     -1     -2     -2     -1     -1     -1     -1     -2     65     -1     -2     -2     -1     -1     -2     -1     67     -1     -1     66     -1     -2     -1     -1     -1     -1     -1     -1     -1
+assignment_exp1          69     -2     68     69     -2     69     69     69     -2     -2     -2     -2     -2     69     -2     69     -2     -2     -2     69     69     -2     -2     69     -2     -2     69     69     -2     -2     69     -2     -2     -2     -2     69
+init_decl1               70     -2     71     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -1     -2     -2     70     -2     -2     -2     -2     -2
+outputs1                 -2     -2     -2     -1     -2     -2     -1     -1     -2     -2     -2     -2     -2     -1     -1     -1     -2     -2     -2     -1     -1     -2     -2     -1     -2     -2     -1     -1     -2     -2     73     -2     -2     -2     -2     72
+inputs1                  -2     -2     -2     -1     -2     -2     -1     -1     -2     74     -2     -2     -2     -1     -1     -1     -2     -2     -2     -1     -1     -2     -2     -1     -2     -2     -1     -1     -2     -2     75     -2     -2     -2     -2     -2
+compound_stmt1           -2     -2     -2     83     -2     -2     79     76     86     -2     -2     -2     -2     77     -2     80     -2     -2     87     84     85     88     -2     82     -2     -2     81     -1     -2     -2     78     -2     -2     -2     -2     -2
+compound_stmt2           -2     -2     -2     96     -2     -2     92     89     -2     -2     -2     -2     -2     90     -2     93     -2     -2     -2     97     98     -2     -2     95     -2     -2     94     -1     -2     -2     91     -2     -2     -2     -2     -2
+stmts'                   -2     -2     -2     99     -2     -2     99    100     -2     -2     -2     -2     -2     99     -2     99     -2     -2     -2     99     99     -2     -2     99     -2     -2     99     -1     -2     -2     99     -2     -2     -2     -2     -2
+read_stmts'              -2     -2     -2    102     -2     -2    102    102     -2     -2     -2     -2     -2    102     -2    102     -2     -2     -2    102    102     -2     -2    102     -2     -2    102    102     -2     -2    102     -2     -2     -2     -2     -2
+write_stmts'             -2     -2     -2    104     -2     -2    104    104     -2     -2     -2     -2     -2    104     -2    104     -2     -2     -2    104    104     -2     -2    104     -2     -2    104    104     -2     -2    104     -2     -2     -2     -2     -2
+decls'                   -2     -2     -2    106     -2     -2    106    106    105     -2     -2     -2     -2    106     -2    106     -2     -2    105    106    106    105     -2    106     -2     -2    106     -1     -2     -2    106     -2     -2     -2     -2     -2
+init_decl_list'         107     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -1     -2     -2    108     -2     -2     -2     -2     -2
+exp'                    110     -2     -2     -2     -2    110     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -2     -1     -2     -2    110     -2     -2     -2     -2    110
+logical_or_exp'         112     -2    112    112     -2    112    112    112     -2     -2    111     -2     -2    112     -2    112     -2     -2     -2    112    112     -2     -2    112     -2     -2    112    112     -2     -2    112     -2     -2     -2     -2    112
+logical_and_exp'        114     -2    114    114     -2    114    114    114     -2     -2    114     -2     -2    114     -2    114     -2     -2     -2    114    114     -2     -2    114     -2     -2    114    114     -2     -2    114    113     -2     -2     -2    114
+equality_exp'           116     -2    116    116     -2    116    116    116     -2     -2    116     -2     -2    116     -2    116    115     -2     -2    116    116     -2    115    116     -2     -2    116    116     -2     -2    116    116     -2     -2     -2    116
+rel_exp'                118     -2    118    118     -2    118    118    118     -2     -2    118     -2    117    118     -2    118    118     -2     -2    118    118     -2    118    118    117     -2    118    118     -2    117    118    118     -2     -2    117    118
+add_exp'                120     -2    120    120     -2    120    120    120     -2     -2    120     -2    120    120     -2    120    120     -2     -2    120    120     -2    120    120    120    119    120    120     -2    120    120    120     -2    119    120    120
+mul_exp'                122    121    122    122     -2    122    122    122     -2     -2    122    121    122    122     -2    122    122     -2     -2    122    122     -2    122    122    122    122    122    122     -2    122    122    122    121    122    122    122
+
+
+MATCHED                                            | STACK                                    | INPUT      | ACTION                        
+                                                   | start $                                  | void       | push start                    
+                                                   | void main ( ) compound_stmt $            | void       | output start -> void main ( ) compound_stmt 
+void                                               | main ( ) compound_stmt $                 | main       | match void                    
+void main                                          | ( ) compound_stmt $                      | (          | match main                    
+void main (                                        | ) compound_stmt $                        | )          | match (                       
+void main ( )                                      | compound_stmt $                          | {          | match )                       
+void main ( )                                      | { compound_stmt1 $                       | {          | output compound_stmt -> { compound_stmt1 
+void main ( ) {                                    | compound_stmt1 $                         | int        | match {                       
+void main ( ) {                                    | int init_decl_list ; decls' compound_stmt2 $  | int        | output compound_stmt1 -> int init_decl_list ; decls' compound_stmt2 
+void main ( ) { int                                | init_decl_list ; decls' compound_stmt2 $  | id         | match int                     
+void main ( ) { int                                | init_decl init_decl_list' ; decls' compound_stmt2 $  | id         | output init_decl_list -> init_decl init_decl_list' 
+void main ( ) { int                                | id init_decl1 init_decl_list' ; decls' compound_stmt2 $  | id         | output init_decl -> id init_decl1 
+void main ( ) { int id                             | init_decl1 init_decl_list' ; decls' compound_stmt2 $  | ;          | match id                      
+void main ( ) { int id                             | init_decl_list' ; decls' compound_stmt2 $  | ;          | output init_decl1 -> ε       
+void main ( ) { int id                             | ; decls' compound_stmt2 $                | ;          | output init_decl_list' -> ε  
+void main ( ) { int id ;                           | decls' compound_stmt2 $                  | int        | match ;                       
+void main ( ) { int id ;                           | decl decls' compound_stmt2 $             | int        | output decls' -> decl decls'  
+void main ( ) { int id ;                           | type init_decl_list ; decls' compound_stmt2 $  | int        | output decl -> type init_decl_list ; 
+void main ( ) { int id ;                           | int init_decl_list ; decls' compound_stmt2 $  | int        | output type -> int            
+void main ( ) { int id ; int                       | init_decl_list ; decls' compound_stmt2 $  | id         | match int                     
+void main ( ) { int id ; int                       | init_decl init_decl_list' ; decls' compound_stmt2 $  | id         | output init_decl_list -> init_decl init_decl_list' 
+void main ( ) { int id ; int                       | id init_decl1 init_decl_list' ; decls' compound_stmt2 $  | id         | output init_decl -> id init_decl1 
+void main ( ) { int id ; int id                    | init_decl1 init_decl_list' ; decls' compound_stmt2 $  | ;          | match id                      
+void main ( ) { int id ; int id                    | init_decl_list' ; decls' compound_stmt2 $  | ;          | output init_decl1 -> ε       
+void main ( ) { int id ; int id                    | ; decls' compound_stmt2 $                | ;          | output init_decl_list' -> ε  
+void main ( ) { int id ; int id ;                  | decls' compound_stmt2 $                  | int        | match ;                       
+void main ( ) { int id ; int id ;                  | decl decls' compound_stmt2 $             | int        | output decls' -> decl decls'  
+void main ( ) { int id ; int id ;                  | type init_decl_list ; decls' compound_stmt2 $  | int        | output decl -> type init_decl_list ; 
+void main ( ) { int id ; int id ;                  | int init_decl_list ; decls' compound_stmt2 $  | int        | output type -> int            
+void main ( ) { int id ; int id ; int              | init_decl_list ; decls' compound_stmt2 $  | id         | match int                     
+void main ( ) { int id ; int id ; int              | init_decl init_decl_list' ; decls' compound_stmt2 $  | id         | output init_decl_list -> init_decl init_decl_list' 
+void main ( ) { int id ; int id ; int              | id init_decl1 init_decl_list' ; decls' compound_stmt2 $  | id         | output init_decl -> id init_decl1 
+void main ( ) { int id ; int id ; int id           | init_decl1 init_decl_list' ; decls' compound_stmt2 $  | ;          | match id                      
+void main ( ) { int id ; int id ; int id           | init_decl_list' ; decls' compound_stmt2 $  | ;          | output init_decl1 -> ε       
+void main ( ) { int id ; int id ; int id           | ; decls' compound_stmt2 $                | ;          | output init_decl_list' -> ε  
+void main ( ) { int id ; int id ; int id ;         | decls' compound_stmt2 $                  | id         | match ;                       
+void main ( ) { int id ; int id ; int id ;         | compound_stmt2 $                         | id         | output decls' -> ε           
+void main ( ) { int id ; int id ; int id ;         | id mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | id         | output compound_stmt2 -> id mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } 
+void main ( ) { int id ; int id ; int id ; id      | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | match id                      
+void main ( ) { int id ; int id ; int id ; id      | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id      | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id      | equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | output rel_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id      | logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | output equality_exp' -> ε    
+void main ( ) { int id ; int id ; int id ; id      | logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | output logical_and_exp' -> ε 
+void main ( ) { int id ; int id ; int id ; id      | assignment_exp1 exp' ; stmts' } $        | =          | output logical_or_exp' -> ε  
+void main ( ) { int id ; int id ; int id ; id      | = assignment_exp exp' ; stmts' } $       | =          | output assignment_exp1 -> = assignment_exp 
+void main ( ) { int id ; int id ; int id ; id =    | assignment_exp exp' ; stmts' } $         | number     | match =                       
+void main ( ) { int id ; int id ; int id ; id =    | logical_or_exp assignment_exp1 exp' ; stmts' } $  | number     | output assignment_exp -> logical_or_exp assignment_exp1 
+void main ( ) { int id ; int id ; int id ; id =    | logical_and_exp logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output logical_or_exp -> logical_and_exp logical_or_exp' 
+void main ( ) { int id ; int id ; int id ; id =    | equality_exp logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output logical_and_exp -> equality_exp logical_and_exp' 
+void main ( ) { int id ; int id ; int id ; id =    | rel_exp equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output equality_exp -> rel_exp equality_exp' 
+void main ( ) { int id ; int id ; int id ; id =    | add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output rel_exp -> add_exp rel_exp' 
+void main ( ) { int id ; int id ; int id ; id =    | mul_exp add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output add_exp -> mul_exp add_exp' 
+void main ( ) { int id ; int id ; int id ; id =    | pri_exp mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output mul_exp -> pri_exp mul_exp' 
+void main ( ) { int id ; int id ; int id ; id =    | number mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output pri_exp -> number      
+void main ( ) { int id ; int id ; int id ; id = number  | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | match number                  
+void main ( ) { int id ; int id ; int id ; id = number  | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number  | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number  | equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | output rel_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number  | logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | output equality_exp' -> ε    
+void main ( ) { int id ; int id ; int id ; id = number  | logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | output logical_and_exp' -> ε 
+void main ( ) { int id ; int id ; int id ; id = number  | assignment_exp1 exp' ; stmts' } $        | ;          | output logical_or_exp' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number  | exp' ; stmts' } $                        | ;          | output assignment_exp1 -> ε  
+void main ( ) { int id ; int id ; int id ; id = number  | ; stmts' } $                             | ;          | output exp' -> ε             
+void main ( ) { int id ; int id ; int id ; id = number ;  | stmts' } $                               | id         | match ;                       
+void main ( ) { int id ; int id ; int id ; id = number ;  | stmt stmts' } $                          | id         | output stmts' -> stmt stmts'  
+void main ( ) { int id ; int id ; int id ; id = number ;  | exp_stmt stmts' } $                      | id         | output stmt -> exp_stmt       
+void main ( ) { int id ; int id ; int id ; id = number ;  | exp ; stmts' } $                         | id         | output exp_stmt -> exp ;      
+void main ( ) { int id ; int id ; int id ; id = number ;  | assignment_exp exp' ; stmts' } $         | id         | output exp -> assignment_exp exp' 
+void main ( ) { int id ; int id ; int id ; id = number ;  | logical_or_exp assignment_exp1 exp' ; stmts' } $  | id         | output assignment_exp -> logical_or_exp assignment_exp1 
+void main ( ) { int id ; int id ; int id ; id = number ;  | logical_and_exp logical_or_exp' assignment_exp1 exp' ; stmts' } $  | id         | output logical_or_exp -> logical_and_exp logical_or_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ;  | equality_exp logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | id         | output logical_and_exp -> equality_exp logical_and_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ;  | rel_exp equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | id         | output equality_exp -> rel_exp equality_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ;  | add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | id         | output rel_exp -> add_exp rel_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ;  | mul_exp add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | id         | output add_exp -> mul_exp add_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ;  | pri_exp mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | id         | output mul_exp -> pri_exp mul_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ;  | id mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | id         | output pri_exp -> id          
+void main ( ) { int id ; int id ; int id ; id = number ; id  | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | match id                      
+void main ( ) { int id ; int id ; int id ; id = number ; id  | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id  | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id  | equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | output rel_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id  | logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | output equality_exp' -> ε    
+void main ( ) { int id ; int id ; int id ; id = number ; id  | logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | output logical_and_exp' -> ε 
+void main ( ) { int id ; int id ; int id ; id = number ; id  | assignment_exp1 exp' ; stmts' } $        | =          | output logical_or_exp' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id  | = assignment_exp exp' ; stmts' } $       | =          | output assignment_exp1 -> = assignment_exp 
+void main ( ) { int id ; int id ; int id ; id = number ; id =  | assignment_exp exp' ; stmts' } $         | number     | match =                       
+void main ( ) { int id ; int id ; int id ; id = number ; id =  | logical_or_exp assignment_exp1 exp' ; stmts' } $  | number     | output assignment_exp -> logical_or_exp assignment_exp1 
+void main ( ) { int id ; int id ; int id ; id = number ; id =  | logical_and_exp logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output logical_or_exp -> logical_and_exp logical_or_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id =  | equality_exp logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output logical_and_exp -> equality_exp logical_and_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id =  | rel_exp equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output equality_exp -> rel_exp equality_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id =  | add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output rel_exp -> add_exp rel_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id =  | mul_exp add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output add_exp -> mul_exp add_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id =  | pri_exp mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output mul_exp -> pri_exp mul_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id =  | number mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output pri_exp -> number      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number  | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | match number                  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number  | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number  | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number  | equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | output rel_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number  | logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | output equality_exp' -> ε    
+void main ( ) { int id ; int id ; int id ; id = number ; id = number  | logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | output logical_and_exp' -> ε 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number  | assignment_exp1 exp' ; stmts' } $        | ;          | output logical_or_exp' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number  | exp' ; stmts' } $                        | ;          | output assignment_exp1 -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number  | ; stmts' } $                             | ;          | output exp' -> ε             
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ;  | stmts' } $                               | id         | match ;                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ;  | stmt stmts' } $                          | id         | output stmts' -> stmt stmts'  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ;  | exp_stmt stmts' } $                      | id         | output stmt -> exp_stmt       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ;  | exp ; stmts' } $                         | id         | output exp_stmt -> exp ;      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ;  | assignment_exp exp' ; stmts' } $         | id         | output exp -> assignment_exp exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ;  | logical_or_exp assignment_exp1 exp' ; stmts' } $  | id         | output assignment_exp -> logical_or_exp assignment_exp1 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ;  | logical_and_exp logical_or_exp' assignment_exp1 exp' ; stmts' } $  | id         | output logical_or_exp -> logical_and_exp logical_or_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ;  | equality_exp logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | id         | output logical_and_exp -> equality_exp logical_and_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ;  | rel_exp equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | id         | output equality_exp -> rel_exp equality_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ;  | add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | id         | output rel_exp -> add_exp rel_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ;  | mul_exp add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | id         | output add_exp -> mul_exp add_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ;  | pri_exp mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | id         | output mul_exp -> pri_exp mul_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ;  | id mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | id         | output pri_exp -> id          
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id  | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | match id                      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id  | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id  | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id  | equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | output rel_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id  | logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | output equality_exp' -> ε    
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id  | logical_or_exp' assignment_exp1 exp' ; stmts' } $  | =          | output logical_and_exp' -> ε 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id  | assignment_exp1 exp' ; stmts' } $        | =          | output logical_or_exp' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id  | = assignment_exp exp' ; stmts' } $       | =          | output assignment_exp1 -> = assignment_exp 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id =  | assignment_exp exp' ; stmts' } $         | number     | match =                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id =  | logical_or_exp assignment_exp1 exp' ; stmts' } $  | number     | output assignment_exp -> logical_or_exp assignment_exp1 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id =  | logical_and_exp logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output logical_or_exp -> logical_and_exp logical_or_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id =  | equality_exp logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output logical_and_exp -> equality_exp logical_and_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id =  | rel_exp equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output equality_exp -> rel_exp equality_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id =  | add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output rel_exp -> add_exp rel_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id =  | mul_exp add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output add_exp -> mul_exp add_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id =  | pri_exp mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output mul_exp -> pri_exp mul_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id =  | number mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | number     | output pri_exp -> number      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number  | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | match number                  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number  | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number  | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number  | equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | output rel_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number  | logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | output equality_exp' -> ε    
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number  | logical_or_exp' assignment_exp1 exp' ; stmts' } $  | ;          | output logical_and_exp' -> ε 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number  | assignment_exp1 exp' ; stmts' } $        | ;          | output logical_or_exp' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number  | exp' ; stmts' } $                        | ;          | output assignment_exp1 -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number  | ; stmts' } $                             | ;          | output exp' -> ε             
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ;  | stmts' } $                               | IF         | match ;                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ;  | stmt stmts' } $                          | IF         | output stmts' -> stmt stmts'  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ;  | sel_stmt stmts' } $                      | IF         | output stmt -> sel_stmt       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ;  | IF ( exp ) THEN other optional_tail stmts' } $  | IF         | output sel_stmt -> IF ( exp ) THEN other optional_tail 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF  | ( exp ) THEN other optional_tail stmts' } $  | (          | match IF                      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF (  | exp ) THEN other optional_tail stmts' } $  | id         | match (                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF (  | assignment_exp exp' ) THEN other optional_tail stmts' } $  | id         | output exp -> assignment_exp exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF (  | logical_or_exp assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | id         | output assignment_exp -> logical_or_exp assignment_exp1 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF (  | logical_and_exp logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | id         | output logical_or_exp -> logical_and_exp logical_or_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF (  | equality_exp logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | id         | output logical_and_exp -> equality_exp logical_and_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF (  | rel_exp equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | id         | output equality_exp -> rel_exp equality_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF (  | add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | id         | output rel_exp -> add_exp rel_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF (  | mul_exp add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | id         | output add_exp -> mul_exp add_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF (  | pri_exp mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | id         | output mul_exp -> pri_exp mul_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF (  | id mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | id         | output pri_exp -> id          
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id  | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | >=         | match id                      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id  | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | >=         | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id  | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | >=         | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id  | rel_OP add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | >=         | output rel_exp' -> rel_OP add_exp rel_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id  | >= add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | >=         | output rel_OP -> >=           
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >=  | add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | number     | match >=                      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >=  | mul_exp add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | number     | output add_exp -> mul_exp add_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >=  | pri_exp mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | number     | output mul_exp -> pri_exp mul_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >=  | number mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | number     | output pri_exp -> number      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number  | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | )          | match number                  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number  | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | )          | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number  | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | )          | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number  | equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | )          | output rel_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number  | logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | )          | output equality_exp' -> ε    
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number  | logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | )          | output logical_and_exp' -> ε 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number  | assignment_exp1 exp' ) THEN other optional_tail stmts' } $  | )          | output logical_or_exp' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number  | exp' ) THEN other optional_tail stmts' } $  | )          | output assignment_exp1 -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number  | ) THEN other optional_tail stmts' } $    | )          | output exp' -> ε             
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number )  | THEN other optional_tail stmts' } $      | THEN       | match )                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN  | other optional_tail stmts' } $           | {          | match THEN                    
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN  | compound_stmt optional_tail stmts' } $   | {          | output other -> compound_stmt 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN  | { compound_stmt1 optional_tail stmts' } $  | {          | output compound_stmt -> { compound_stmt1 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN {  | compound_stmt1 optional_tail stmts' } $  | int        | match {                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN {  | int init_decl_list ; decls' compound_stmt2 optional_tail stmts' } $  | int        | output compound_stmt1 -> int init_decl_list ; decls' compound_stmt2 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int  | init_decl_list ; decls' compound_stmt2 optional_tail stmts' } $  | id         | match int                     
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int  | init_decl init_decl_list' ; decls' compound_stmt2 optional_tail stmts' } $  | id         | output init_decl_list -> init_decl init_decl_list' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int  | id init_decl1 init_decl_list' ; decls' compound_stmt2 optional_tail stmts' } $  | id         | output init_decl -> id init_decl1 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id  | init_decl1 init_decl_list' ; decls' compound_stmt2 optional_tail stmts' } $  | ;          | match id                      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id  | init_decl_list' ; decls' compound_stmt2 optional_tail stmts' } $  | ;          | output init_decl1 -> ε       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id  | ; decls' compound_stmt2 optional_tail stmts' } $  | ;          | output init_decl_list' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ;  | decls' compound_stmt2 optional_tail stmts' } $  | id         | match ;                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ;  | compound_stmt2 optional_tail stmts' } $  | id         | output decls' -> ε           
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ;  | id mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | id         | output compound_stmt2 -> id mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id  | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | =          | match id                      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id  | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | =          | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id  | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | =          | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id  | equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | =          | output rel_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id  | logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | =          | output equality_exp' -> ε    
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id  | logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | =          | output logical_and_exp' -> ε 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id  | assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | =          | output logical_or_exp' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id  | = assignment_exp exp' ; stmts' } optional_tail stmts' } $  | =          | output assignment_exp1 -> = assignment_exp 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id =  | assignment_exp exp' ; stmts' } optional_tail stmts' } $  | number     | match =                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id =  | logical_or_exp assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | number     | output assignment_exp -> logical_or_exp assignment_exp1 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id =  | logical_and_exp logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | number     | output logical_or_exp -> logical_and_exp logical_or_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id =  | equality_exp logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | number     | output logical_and_exp -> equality_exp logical_and_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id =  | rel_exp equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | number     | output equality_exp -> rel_exp equality_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id =  | add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | number     | output rel_exp -> add_exp rel_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id =  | mul_exp add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | number     | output add_exp -> mul_exp add_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id =  | pri_exp mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | number     | output mul_exp -> pri_exp mul_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id =  | number mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | number     | output pri_exp -> number      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | ;          | match number                  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | ;          | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | ;          | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | ;          | output rel_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | ;          | output equality_exp' -> ε    
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | ;          | output logical_and_exp' -> ε 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | assignment_exp1 exp' ; stmts' } optional_tail stmts' } $  | ;          | output logical_or_exp' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | exp' ; stmts' } optional_tail stmts' } $  | ;          | output assignment_exp1 -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | ; stmts' } optional_tail stmts' } $      | ;          | output exp' -> ε             
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ;  | stmts' } optional_tail stmts' } $        | IF         | match ;                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ;  | stmt stmts' } optional_tail stmts' } $   | IF         | output stmts' -> stmt stmts'  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ;  | sel_stmt stmts' } optional_tail stmts' } $  | IF         | output stmt -> sel_stmt       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ;  | IF ( exp ) THEN other optional_tail stmts' } optional_tail stmts' } $  | IF         | output sel_stmt -> IF ( exp ) THEN other optional_tail 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF  | ( exp ) THEN other optional_tail stmts' } optional_tail stmts' } $  | (          | match IF                      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF (  | exp ) THEN other optional_tail stmts' } optional_tail stmts' } $  | id         | match (                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF (  | assignment_exp exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | id         | output exp -> assignment_exp exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF (  | logical_or_exp assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | id         | output assignment_exp -> logical_or_exp assignment_exp1 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF (  | logical_and_exp logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | id         | output logical_or_exp -> logical_and_exp logical_or_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF (  | equality_exp logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | id         | output logical_and_exp -> equality_exp logical_and_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF (  | rel_exp equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | id         | output equality_exp -> rel_exp equality_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF (  | add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | id         | output rel_exp -> add_exp rel_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF (  | mul_exp add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | id         | output add_exp -> mul_exp add_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF (  | pri_exp mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | id         | output mul_exp -> pri_exp mul_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF (  | id mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | id         | output pri_exp -> id          
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id  | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | >=         | match id                      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id  | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | >=         | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id  | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | >=         | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id  | rel_OP add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | >=         | output rel_exp' -> rel_OP add_exp rel_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id  | >= add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | >=         | output rel_OP -> >=           
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >=  | add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | number     | match >=                      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >=  | mul_exp add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | number     | output add_exp -> mul_exp add_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >=  | pri_exp mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | number     | output mul_exp -> pri_exp mul_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >=  | number mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | number     | output pri_exp -> number      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number  | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | )          | match number                  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number  | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | )          | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number  | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | )          | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number  | equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | )          | output rel_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number  | logical_and_exp' logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | )          | output equality_exp' -> ε    
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number  | logical_or_exp' assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | )          | output logical_and_exp' -> ε 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number  | assignment_exp1 exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | )          | output logical_or_exp' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number  | exp' ) THEN other optional_tail stmts' } optional_tail stmts' } $  | )          | output assignment_exp1 -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number  | ) THEN other optional_tail stmts' } optional_tail stmts' } $  | )          | output exp' -> ε             
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number )  | THEN other optional_tail stmts' } optional_tail stmts' } $  | THEN       | match )                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN  | other optional_tail stmts' } optional_tail stmts' } $  | {          | match THEN                    
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN  | compound_stmt optional_tail stmts' } optional_tail stmts' } $  | {          | output other -> compound_stmt 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN  | { compound_stmt1 optional_tail stmts' } optional_tail stmts' } $  | {          | output compound_stmt -> { compound_stmt1 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN {  | compound_stmt1 optional_tail stmts' } optional_tail stmts' } $  | int        | match {                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN {  | int init_decl_list ; decls' compound_stmt2 optional_tail stmts' } optional_tail stmts' } $  | int        | output compound_stmt1 -> int init_decl_list ; decls' compound_stmt2 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int  | init_decl_list ; decls' compound_stmt2 optional_tail stmts' } optional_tail stmts' } $  | id         | match int                     
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int  | init_decl init_decl_list' ; decls' compound_stmt2 optional_tail stmts' } optional_tail stmts' } $  | id         | output init_decl_list -> init_decl init_decl_list' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int  | id init_decl1 init_decl_list' ; decls' compound_stmt2 optional_tail stmts' } optional_tail stmts' } $  | id         | output init_decl -> id init_decl1 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id  | init_decl1 init_decl_list' ; decls' compound_stmt2 optional_tail stmts' } optional_tail stmts' } $  | ;          | match id                      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id  | init_decl_list' ; decls' compound_stmt2 optional_tail stmts' } optional_tail stmts' } $  | ;          | output init_decl1 -> ε       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id  | ; decls' compound_stmt2 optional_tail stmts' } optional_tail stmts' } $  | ;          | output init_decl_list' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ;  | decls' compound_stmt2 optional_tail stmts' } optional_tail stmts' } $  | id         | match ;                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ;  | compound_stmt2 optional_tail stmts' } optional_tail stmts' } $  | id         | output decls' -> ε           
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ;  | id mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | id         | output compound_stmt2 -> id mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id  | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | =          | match id                      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id  | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | =          | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id  | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | =          | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id  | equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | =          | output rel_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id  | logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | =          | output equality_exp' -> ε    
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id  | logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | =          | output logical_and_exp' -> ε 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id  | assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | =          | output logical_or_exp' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id  | = assignment_exp exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | =          | output assignment_exp1 -> = assignment_exp 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id =  | assignment_exp exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | number     | match =                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id =  | logical_or_exp assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | number     | output assignment_exp -> logical_or_exp assignment_exp1 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id =  | logical_and_exp logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | number     | output logical_or_exp -> logical_and_exp logical_or_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id =  | equality_exp logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | number     | output logical_and_exp -> equality_exp logical_and_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id =  | rel_exp equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | number     | output equality_exp -> rel_exp equality_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id =  | add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | number     | output rel_exp -> add_exp rel_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id =  | mul_exp add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | number     | output add_exp -> mul_exp add_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id =  | pri_exp mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | number     | output mul_exp -> pri_exp mul_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id =  | number mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | number     | output pri_exp -> number      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | ;          | match number                  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | ;          | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | ;          | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | ;          | output rel_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | ;          | output equality_exp' -> ε    
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | logical_or_exp' assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | ;          | output logical_and_exp' -> ε 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | assignment_exp1 exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | ;          | output logical_or_exp' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | exp' ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | ;          | output assignment_exp1 -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number  | ; stmts' } optional_tail stmts' } optional_tail stmts' } $  | ;          | output exp' -> ε             
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ;  | stmts' } optional_tail stmts' } optional_tail stmts' } $  | }          | match ;                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ;  | } optional_tail stmts' } optional_tail stmts' } $  | }          | output stmts' -> ε           
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; }  | optional_tail stmts' } optional_tail stmts' } $  | ELSE       | match }                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; }  | ELSE tail stmts' } optional_tail stmts' } $  | ELSE       | output optional_tail -> ELSE tail 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE  | tail stmts' } optional_tail stmts' } $   | {          | match ELSE                    
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE  | { compound_stmt1 stmts' } optional_tail stmts' } $  | {          | output tail -> { compound_stmt1 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE {  | compound_stmt1 stmts' } optional_tail stmts' } $  | int        | match {                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE {  | int init_decl_list ; decls' compound_stmt2 stmts' } optional_tail stmts' } $  | int        | output compound_stmt1 -> int init_decl_list ; decls' compound_stmt2 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int  | init_decl_list ; decls' compound_stmt2 stmts' } optional_tail stmts' } $  | id         | match int                     
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int  | init_decl init_decl_list' ; decls' compound_stmt2 stmts' } optional_tail stmts' } $  | id         | output init_decl_list -> init_decl init_decl_list' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int  | id init_decl1 init_decl_list' ; decls' compound_stmt2 stmts' } optional_tail stmts' } $  | id         | output init_decl -> id init_decl1 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id  | init_decl1 init_decl_list' ; decls' compound_stmt2 stmts' } optional_tail stmts' } $  | ;          | match id                      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id  | init_decl_list' ; decls' compound_stmt2 stmts' } optional_tail stmts' } $  | ;          | output init_decl1 -> ε       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id  | ; decls' compound_stmt2 stmts' } optional_tail stmts' } $  | ;          | output init_decl_list' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ;  | decls' compound_stmt2 stmts' } optional_tail stmts' } $  | id         | match ;                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ;  | compound_stmt2 stmts' } optional_tail stmts' } $  | id         | output decls' -> ε           
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ;  | id mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | id         | output compound_stmt2 -> id mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id  | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | =          | match id                      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id  | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | =          | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id  | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | =          | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id  | equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | =          | output rel_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id  | logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | =          | output equality_exp' -> ε    
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id  | logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | =          | output logical_and_exp' -> ε 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id  | assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | =          | output logical_or_exp' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id  | = assignment_exp exp' ; stmts' } stmts' } optional_tail stmts' } $  | =          | output assignment_exp1 -> = assignment_exp 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id =  | assignment_exp exp' ; stmts' } stmts' } optional_tail stmts' } $  | number     | match =                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id =  | logical_or_exp assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | number     | output assignment_exp -> logical_or_exp assignment_exp1 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id =  | logical_and_exp logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | number     | output logical_or_exp -> logical_and_exp logical_or_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id =  | equality_exp logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | number     | output logical_and_exp -> equality_exp logical_and_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id =  | rel_exp equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | number     | output equality_exp -> rel_exp equality_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id =  | add_exp rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | number     | output rel_exp -> add_exp rel_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id =  | mul_exp add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | number     | output add_exp -> mul_exp add_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id =  | pri_exp mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | number     | output mul_exp -> pri_exp mul_exp' 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id =  | number mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | number     | output pri_exp -> number      
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number  | mul_exp' add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | ;          | match number                  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number  | add_exp' rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | ;          | output mul_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number  | rel_exp' equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | ;          | output add_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number  | equality_exp' logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | ;          | output rel_exp' -> ε         
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number  | logical_and_exp' logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | ;          | output equality_exp' -> ε    
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number  | logical_or_exp' assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | ;          | output logical_and_exp' -> ε 
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number  | assignment_exp1 exp' ; stmts' } stmts' } optional_tail stmts' } $  | ;          | output logical_or_exp' -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number  | exp' ; stmts' } stmts' } optional_tail stmts' } $  | ;          | output assignment_exp1 -> ε  
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number  | ; stmts' } stmts' } optional_tail stmts' } $  | ;          | output exp' -> ε             
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number ;  | stmts' } stmts' } optional_tail stmts' } $  | }          | match ;                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number ;  | } stmts' } optional_tail stmts' } $      | }          | output stmts' -> ε           
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number ; }  | stmts' } optional_tail stmts' } $        | }          | match }                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number ; }  | } optional_tail stmts' } $               | }          | output stmts' -> ε           
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number ; } }  | optional_tail stmts' } $                 | }          | match }                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number ; } }  | stmts' } $                               | }          | output optional_tail -> ε    
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number ; } }  | } $                                      | }          | output stmts' -> ε           
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number ; } } }  | $                                        | $          | match }                       
+void main ( ) { int id ; int id ; int id ; id = number ; id = number ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; IF ( id >= number ) THEN { int id ; id = number ; } ELSE { int id ; id = number ; } } }  | $                                        | $          | accept                        
