@@ -1,4 +1,4 @@
-78
+80
 start :- void main ( ) compound_stmt
 stmt :- compound_stmt
 stmt :- exp_stmt
@@ -77,18 +77,20 @@ mul_OP :- %
 pri_exp :- ( exp )
 pri_exp :- id
 pri_exp :- constant
+constant :- number
+constant :- real
 void main ( ) { 
     int id = exp , id ;
     float id ; 
-    IF ( id || constant && id ) THEN {
+    IF ( id || number && id ) THEN {
         cin >> id >> id ;
         IF ( exp ) THEN id = id + id ;
         ELSE IF ( exp ) THEN  id = id * id ;
-        ELSE id = constant ;
+        ELSE id = number ;
     } ELSE IF ( exp ) THEN {
-        cout << constant << id << ( id + ( id * id ) - id ) / constant ;
-        IF ( exp ) THEN id = id - constant ;
+        cout << number << id << ( id + ( id * id ) - id ) / number ;
+        IF ( exp ) THEN id = id - number ;
         IF ( exp ) THEN cout << id ; 
-        ELSE id = id % constant ;
-    } ELSE id = id / constant ;
+        ELSE id = id % number ;
+    } ELSE id = id / number ;
 } $

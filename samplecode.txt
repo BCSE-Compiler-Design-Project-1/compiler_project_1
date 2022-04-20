@@ -1,11 +1,12 @@
 void main ( ) 
 { 
-    int a ; 
+    int a = 10 ; 
     int b ; 
     int c ; 
     a = 5 ; 
     b = 7 ; 
     c = 10 ; 
+    int d = a * b + c ;
     if ( a >= 5 ) then 
     { 
         int x ; 
@@ -45,5 +46,6 @@ void main ( )
                 x = 15.23 ; 
             }          
         } 
-    } 
+    }
+    cout << a << b << c << a * b ; 
 } 

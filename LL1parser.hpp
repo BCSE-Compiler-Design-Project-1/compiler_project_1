@@ -8,13 +8,13 @@ class LL1pr
 private:
     unordered_map<string, int> non_terminals;
     unordered_map<string, int> terminals;
-    unordered_map<string, vector<vector<string>>> parsed_prod;
+    unordered_map<string, vector<vector<string> > > parsed_prod;
     vector<string> prods;
-    unordered_map<string, unordered_set<string>> FIRST;
-    unordered_map<string, unordered_set<string>> FOLLOW;
-    unordered_map<int, pair<int, int>> productions;
-    vector<list<int>> follow_dep;
-    vector<vector<int>> parsing_table;
+    unordered_map<string, unordered_set<string> > FIRST;
+    unordered_map<string, unordered_set<string> > FOLLOW;
+    unordered_map<int, pair<int, int> > productions;
+    vector<list<int> > follow_dep;
+    vector<vector<int> > parsing_table;
     string startSym;
     int nTcount = 0;
     int Tcount = 0;

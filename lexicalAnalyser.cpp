@@ -4,7 +4,7 @@
 #include <string>
 
 using namespace std;
-string keywords = "int|float|void|main|if|else|then|cin|cout";
+string keywords = "void|int|float|main|if|else|then|cin|cout";
 string pattern_id = "(\\b(?!" + keywords + "\\b)[A-Za-z_][A-Za-z0-9_]*\\b)";
 
 regex regex_for_identifier(pattern_id);
@@ -14,7 +14,7 @@ regex regex_for_positive_int("[0-9]+");
 regex regex_for_positive_float("[0-9]+[.][0-9]+");
 regex regex_for_negative_float("[-][0-9]+[.][0-9]+");
 
-regex regex_for_type("int|float|void");
+regex regex_for_type("int|float");
 
 int main()
 {
@@ -23,7 +23,10 @@ int main()
     cin >> fileName;
 
     fstream file;
+    ofstream file1;
+
     file.open(fileName, ios::in);
+    file1.open("lex_ana_output.txt");
 
     string tp;
     while (getline(file, tp))
@@ -32,13 +35,13 @@ int main()
 
         tp = regex_replace(tp, regex_for_type, "TYPE");
 
-        tp = regex_replace(tp, regex_for_negative_float, "float");
-        tp = regex_replace(tp, regex_for_positive_float, "float");
+        tp = regex_replace(tp, regex_for_negative_float, "real");
+        tp = regex_replace(tp, regex_for_positive_float, "real");
 
-        tp = regex_replace(tp, regex_for_negative_int, "int");
-        tp = regex_replace(tp, regex_for_positive_int, "int");
+        tp = regex_replace(tp, regex_for_negative_int, "number");
+        tp = regex_replace(tp, regex_for_positive_int, "number");
 
-        cout << tp << "\n";
+        file1 << tp << "\n";
     }
 
     return 0;
