@@ -325,6 +325,11 @@ void LL1pr::parser()
             }
             printParsing(matched, curr_st, curr_token, action);
         }
+        else if (terminals.find(parsing_st.top()) != terminals.end())
+        {
+            cout << "\nerror.\n";
+            exit(1);
+        }
         else
         {
             int prod_num = parsing_table[non_terminals[parsing_st.top()]][curr_token != "$" ? terminals[curr_token] : terminals[EPSILON]];
