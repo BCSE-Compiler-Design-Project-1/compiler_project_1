@@ -1,13 +1,17 @@
 #include "LL1parser.hpp"
-int main(int argc, char **argv)
+int main()
 {
-    if (argc != 3)
-        exit(1);
-    LL1gr gr = LL1gr(argv[1], argv[2]);
+    string proj_gr, sentence;
+    cout << "Enter the project grammar file name :- ";
+    cin >> proj_gr;
+    LL1gr gr = LL1gr(proj_gr);
+    cout << "Enter the sentence :- ";
+    cin >> sentence;
+
     gr.readGrammar();
     gr.ll1ifyGrammar();
     gr.printGrammar();
-    LL1pr pr = LL1pr(gr, argv[3], argv[2]);
+    LL1pr pr = LL1pr(gr, sentence);
     pr.firstUtil();
     pr.followUtil();
     pr.fillParsingTable();

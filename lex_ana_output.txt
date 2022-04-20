@@ -1,51 +1,25 @@
 void main ( ) 
 { 
-    TYPE id = number ; 
-    TYPE id ; 
-    TYPE id ; 
+    int id ; 
+    int id ; 
+    int id ; 
     id = number ; 
     id = number ; 
     id = number ; 
-    TYPE id = id * id + id ;
-    if ( id >= number ) then 
+    IF ( id >= number ) THEN
     { 
-        TYPE id ; 
+        int id ; 
         id = number ; 
-        if ( id >= number ) then 
+        IF ( id >= number ) THEN
         { 
-            TYPE id ; 
+            int id ; 
             id = number ; 
         } 
-        else 
+        ELSE 
         { 
-            TYPE id ; 
+            int id ; 
             id = number ; 
-        } 
-    } 
-    else 
-    { 
-        TYPE id ; 
-        id = number ; 
-        if ( id >= number ) then 
-        { 
-            TYPE id ; 
-            id = number ; 
-            if ( id >= number ) then 
-            { 
-                TYPE id ; 
-                id = real ; 
-            } 
-        } 
-        else 
-        { 
-            TYPE id ;
-            id = number ;  
-            if ( id >= number ) then 
-            { 
-                TYPE id ; 
-                id = real ; 
-            }          
         } 
     }
     cout << id << id << id << id * id ; 
-} 
+} $

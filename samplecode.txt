@@ -1,12 +1,11 @@
 void main ( ) 
 { 
-    int a = 10 ; 
+    int a ; 
     int b ; 
     int c ; 
     a = 5 ; 
     b = 7 ; 
     c = 10 ; 
-    int d = a * b + c ;
     if ( a >= 5 ) then 
     { 
         int x ; 

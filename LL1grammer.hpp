@@ -14,27 +14,25 @@ class LL1gr
 private:
     unordered_map<string, int> non_terminals;
     unordered_map<string, int> terminals;
-    unordered_map<string, vector<vector<string>>> parsed_prod;
+    unordered_map<string, vector<vector<string> > > parsed_prod;
     string startSym;
     int nTcount = 0;
     int Tcount = 0;
     void insertTl(string);
     void inserNtl(string);
-    ifstream inpFile;
-    ofstream outFile;
+    fstream inpFile;
     void printProd(const vector<string> &);
-    vector<vector<string>> parse(const string &);
+    vector<vector<string> > parse(const string &);
     vector<string> parse2(const string &);
     void left_factor(const string &);
     void remLR_dir(const string &);
-    vector<vector<string>> concat_prod(const string &, const vector<vector<string>>::iterator &);
+    vector<vector<string> > concat_prod(const string &, const vector<vector<string> >::iterator &);
     void remLR_indir();
 
 public:
-    LL1gr(char *file1, char *file2)
+    LL1gr(string file1)
     {
         inpFile.open(file1, ios::in);
-        outFile.open(file2, ios::trunc | ios::out);
     }
     void readGrammar();
     void printGrammar();
@@ -47,7 +45,7 @@ public:
     {
         return terminals;
     }
-    unordered_map<string, vector<vector<string>>> &getParsedProd()
+    unordered_map<string, vector<vector<string> > > &getParsedProd()
     {
         return parsed_prod;
     }
@@ -61,23 +59,22 @@ void LL1gr::printGrammar()
 {
     for (auto it : parsed_prod)
     {
-        outFile << it.first << " -> ";
+        cout << it.first << " -> ";
         printProd(it.second[0]);
         for (int i = 1; i < it.second.size(); ++i)
         {
-            outFile << "| ";
+            cout << "| ";
             printProd(it.second[i]);
         }
-        outFile << "\n";
+        cout << "\n";
     }
-    outFile << "\n\n";
-    outFile.close();
+    cout << "\n\n";
 }
 
 void LL1gr::printProd(const vector<string> &pr)
 {
     for (auto it : pr)
-        outFile << it << " ";
+        cout << it << " ";
 }
 
 void LL1gr::insertTl(string tl)
@@ -93,7 +90,7 @@ void LL1gr::inserNtl(string nTl)
     if (non_terminals.find(nTl) == non_terminals.end())
     {
         non_terminals[nTl] = this->nTcount++;
-        parsed_prod[nTl] = vector<vector<string>>();
+        parsed_prod[nTl] = vector<vector<string> >();
     }
     if (terminals.find(nTl) != terminals.end())
     {
@@ -102,9 +99,9 @@ void LL1gr::inserNtl(string nTl)
     }
 }
 
-vector<vector<string>> LL1gr::parse(const string &prod)
+vector<vector<string> > LL1gr::parse(const string &prod)
 {
-    vector<vector<string>> productions;
+    vector<vector<string> > productions;
     string s = prod.substr(prod.find(":-") + 3);
     vector<string> temp;
     string p = "";
@@ -188,8 +185,8 @@ void LL1gr::left_factor(const string &prod)
 {
     int i, j;
     int e = 1, p = this->parsed_prod[prod].size();
-    vector<pair<string, int>> prodleft(p, {prod, 0});
-    vector<vector<string>> prodright(this->parsed_prod[prod]);
+    vector<pair<string, int> > prodleft(p, {prod, 0});
+    vector<vector<string> > prodright(this->parsed_prod[prod]);
     for (i = 0; i < p; ++i)
     {
         for (j = i + 1; j < p; ++j)
@@ -267,12 +264,12 @@ void LL1gr::left_factor(const string &prod)
     }
 }
 
-vector<vector<string>> LL1gr::concat_prod(const string &prod, const vector<vector<string>>::iterator &it)
+vector<vector<string> > LL1gr::concat_prod(const string &prod, const vector<vector<string> >::iterator &it)
 {
     auto it1 = it->begin();
     it1++;
     auto it2 = it->end();
-    vector<vector<string>> productions;
+    vector<vector<string> > productions;
     vector<string> new_prod;
     for (auto pr : this->parsed_prod[prod])
     {
@@ -301,7 +298,7 @@ void LL1gr::remLR_indir()
                 if ((*it)[0] == cj)
                 {
 
-                    vector<vector<string>> new_prod = concat_prod(cj, it);
+                    vector<vector<string> > new_prod = concat_prod(cj, it);
                     it = parsed_prod[ci].erase(it);
                     it = parsed_prod[ci].insert(it, new_prod.begin(), new_prod.end());
                     it += new_prod.size();
@@ -315,7 +312,7 @@ void LL1gr::remLR_indir()
 }
 void LL1gr::remLR_dir(const string &prod)
 {
-    vector<vector<string>> recur, non_recur;
+    vector<vector<string> > recur, non_recur;
     for (auto it : this->parsed_prod[prod])
     {
         if (prod != it[0])
@@ -334,7 +331,7 @@ void LL1gr::remLR_dir(const string &prod)
         x.push_back(prod + "\'");
         this->parsed_prod[prod].push_back(x);
     }
-    vector<vector<string>> new_prod;
+    vector<vector<string> > new_prod;
     for (auto x : recur)
     {
         x.push_back(prod + "\'");
